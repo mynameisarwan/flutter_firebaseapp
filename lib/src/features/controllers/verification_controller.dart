@@ -41,7 +41,9 @@ class VerificationController extends StatelessWidget {
                   userEmail: userEmail,
                 );
         } else {
-          return const Center(child: CircularProgressIndicator());
+          return ProfileScreen(
+            userEmail: userEmail,
+          );
         }
       },
     );
