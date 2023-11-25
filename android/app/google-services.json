@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "290164681095",
+    "project_id": "arafahhoneydb",
+    "storage_bucket": "arafahhoneydb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:290164681095:android:3bd9337e7acc4bed234b22",
+        "android_client_info": {
+          "package_name": "com.example.flutter_firebaseapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtt4KQM9hxlTx01rNDIqwx1V38Pkw01OQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:290164681095:android:c36d48038aded9d2234b22",
+        "android_client_info": {
+          "package_name": "com.example.flutterfirebase_apps"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtt4KQM9hxlTx01rNDIqwx1V38Pkw01OQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
