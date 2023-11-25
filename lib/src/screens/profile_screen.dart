@@ -38,12 +38,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         } else if (snapshot.hasData) {
           final user = snapshot.data!;
 
-          // _gender = user.profileGender == ''
-          //     ? _gender
-          //     : user.profileGender == 'Male'
-          //         ? UserGenderEnum.male
-          //         : UserGenderEnum.female;
-
           return Scaffold(
             body: Container(
               width: screenSize.width,
