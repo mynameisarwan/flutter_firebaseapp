@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart' as eos;
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_button.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_radionbutton.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
 import 'package:flutter_firebaseapp/src/enums/enum_datalookup.dart';
 import 'package:flutter_firebaseapp/src/models/user.dart';
+import 'package:flutter_firebaseapp/src/screens/signin_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String userEmail;
@@ -39,6 +41,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
           final user = snapshot.data!;
 
           return Scaffold(
+            extendBodyBehindAppBar: true,
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.transparent,
+              toolbarHeight: 100,
+              actions: [
+                Ink(
+                  width: 40,
+                  height: 40,
+                  decoration: const ShapeDecoration(
+                    shape: CircleBorder(),
+                    color: Colors.white12,
+                  ),
+                  child: Center(
+                    child: IconButton(
+                      color: Colors.white,
+                      onPressed: () {
+                        eos.FirebaseAuth.instance.signOut().then(
+                          (value) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SignInScreen(),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.logout_outlined,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: screenSize.width / 20,
+                )
+              ],
+            ),
             body: Container(
               width: screenSize.width,
               height: screenSize.height,
@@ -127,7 +169,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         _addressTextController,
                         user.profileAddress,
                         Icons.house_outlined,
-                        TextInputType.phone,
+                        TextInputType.streetAddress,
                       ),
                       const SizedBox(
                         height: 5,
