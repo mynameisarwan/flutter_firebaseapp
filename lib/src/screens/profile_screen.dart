@@ -16,10 +16,9 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final TextEditingController _userNameTextController = TextEditingController();
-  final TextEditingController _phoneNumbTextController =
-      TextEditingController();
-  final TextEditingController _addressTextController = TextEditingController();
+  late TextEditingController _userNameTextController = TextEditingController();
+  late TextEditingController _phoneNumbTextController = TextEditingController();
+  late TextEditingController _addressTextController = TextEditingController();
   UserGenderEnum? _gender;
   @override
   void dispose() {
@@ -39,7 +38,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
           return Text('Error : ${snapshot.error.toString()}');
         } else if (snapshot.hasData) {
           final user = snapshot.data!;
-
+          _userNameTextController = TextEditingController(
+            text: user.profileName,
+          );
+          _phoneNumbTextController = TextEditingController(
+            text: user.phoneNumber,
+          );
+          _addressTextController = TextEditingController(
+            text: user.profileAddress,
+          );
           return Scaffold(
             extendBodyBehindAppBar: true,
             appBar: AppBar(
@@ -112,8 +119,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Column(
                     children: [
                       textFieldTemplForm(
+                        // user.profileName.isEmpty
+                        //     ? _userNameTextController
+                        //     : _userNameTextController = TextEditingController(
+                        //         text: user.profileName,
+                        //       ),
                         _userNameTextController,
-                        user.profileName,
+                        'Profile Name',
                         Icons.person_2_outlined,
                         TextInputType.name,
                       ),
@@ -157,8 +169,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         height: 5,
                       ),
                       textFieldTemplForm(
+                        // user.phoneNumber.isEmpty
+                        //     ? _phoneNumbTextController
+                        //     : _phoneNumbTextController = TextEditingController(
+                        //         text: user.phoneNumber,
+                        //       ),
                         _phoneNumbTextController,
-                        user.phoneNumber,
+                        'Phone Number',
                         Icons.phone_android_outlined,
                         TextInputType.phone,
                       ),
@@ -166,8 +183,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         height: 5,
                       ),
                       textFieldTemplForm(
+                        // user.profileAddress.isEmpty
+                        //     ? _addressTextController
+                        //     : _addressTextController = TextEditingController(
+                        //         text: user.profileAddress,
+                        //       ),
                         _addressTextController,
-                        user.profileAddress,
+                        'User Address',
                         Icons.house_outlined,
                         TextInputType.streetAddress,
                       ),
