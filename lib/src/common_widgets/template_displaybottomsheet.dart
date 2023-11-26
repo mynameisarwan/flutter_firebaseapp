@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/features/controllers/radiobutton_controller.dart';
 
-class DisplayButtomSheetComboboxTemplate extends StatefulWidget {
+class DisplayButtomSheetComboboxTemplate extends StatelessWidget {
   final List<String> statuslist;
   final String? selectedvalue;
   const DisplayButtomSheetComboboxTemplate({
@@ -11,20 +11,13 @@ class DisplayButtomSheetComboboxTemplate extends StatefulWidget {
   });
 
   @override
-  State<DisplayButtomSheetComboboxTemplate> createState() =>
-      _DisplayButtomSheetComboboxTemplateState();
-}
-
-class _DisplayButtomSheetComboboxTemplateState
-    extends State<DisplayButtomSheetComboboxTemplate> {
-  @override
   Widget build(BuildContext context) {
-    String? selectedvalue_ = widget.selectedvalue;
+    String? selectedvalue_ = selectedvalue;
     return GestureDetector(
       onTap: () {
         displayBottomSheetComboboxTemplate(
           context,
-          widget.statuslist,
+          statuslist,
           selectedvalue_,
         );
       },
@@ -34,6 +27,40 @@ class _DisplayButtomSheetComboboxTemplateState
       ),
     );
   }
+
+// class DisplayButtomSheetComboboxTemplate extends StatefulWidget {
+//   final List<String> statuslist;
+//   final String? selectedvalue;
+//   const DisplayButtomSheetComboboxTemplate({
+//     super.key,
+//     required this.statuslist,
+//     required this.selectedvalue,
+//   });
+
+//   @override
+//   State<DisplayButtomSheetComboboxTemplate> createState() =>
+//       _DisplayButtomSheetComboboxTemplateState();
+// }
+
+// class _DisplayButtomSheetComboboxTemplateState
+//     extends State<DisplayButtomSheetComboboxTemplate> {
+//   @override
+//   Widget build(BuildContext context) {
+//     String? selectedvalue_ = widget.selectedvalue;
+//     return GestureDetector(
+//       onTap: () {
+//         displayBottomSheetComboboxTemplate(
+//           context,
+//           widget.statuslist,
+//           selectedvalue_,
+//         );
+//       },
+//       child: const Icon(
+//         Icons.arrow_drop_down_circle_outlined,
+//         color: Colors.white,
+//       ),
+//     );
+//   }
 
   Future displayBottomSheetComboboxTemplate(
     BuildContext context,
@@ -58,11 +85,13 @@ class _DisplayButtomSheetComboboxTemplateState
         child: RadioButtonController(
           statuslist: statuslist,
           selectedvalue: selectedvalue,
-          onchage: (val) {
-            setState(() {
-              selectedvalue = val;
-            });
-          },
+          // onchage: (val) {
+          //   setState(
+          //     () {
+          //       selectedvalue = val;
+          //     },
+          //   );
+          // },
         ),
       ),
     );

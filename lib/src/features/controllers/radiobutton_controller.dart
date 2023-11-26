@@ -1,31 +1,48 @@
 import 'package:flutter/material.dart';
 
-class RadioButtonController extends StatelessWidget {
+class RadioButtonController extends StatefulWidget {
   final List<String> statuslist;
   final String? selectedvalue;
-  final Function(String?)? onchage;
   const RadioButtonController({
     super.key,
     required this.statuslist,
     required this.selectedvalue,
-    required this.onchage,
   });
+
+  @override
+  State<RadioButtonController> createState() => _RadioButtonControllerState();
+}
+
+class _RadioButtonControllerState extends State<RadioButtonController> {
+  String? selectedvalue;
+  @override
+  void initState() {
+    super.initState();
+    selectedvalue = widget.selectedvalue;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        for (var status in statuslist) ...{
+        for (var status in widget.statuslist) ...{
           RadioListTile<String>(
+            value: status,
+            groupValue: selectedvalue,
             title: Text(
               status,
               style: const TextStyle(
                 color: Colors.black,
               ),
             ),
-            value: status,
-            groupValue: selectedvalue,
-            onChanged: onchage,
+            onChanged: (val) {
+              setState(() {
+                selectedvalue = val;
+                print(selectedvalue);
+              });
+            },
+            toggleable: true,
+            selected: true,
           ),
           const SizedBox(
             height: 10,
