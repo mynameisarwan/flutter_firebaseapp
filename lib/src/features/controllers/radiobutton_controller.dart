@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class RadioButtonController extends StatefulWidget {
   final List<String> statuslist;
   final String? selectedvalue;
+  final Function(String?) getselectedvalue;
   const RadioButtonController({
     super.key,
     required this.statuslist,
     required this.selectedvalue,
+    required this.getselectedvalue,
   });
 
   @override
@@ -36,6 +38,7 @@ class _RadioButtonControllerState extends State<RadioButtonController> {
               ),
             ),
             onChanged: (val) {
+              widget.getselectedvalue(val);
               setState(
                 () {
                   selectedvalue = val;

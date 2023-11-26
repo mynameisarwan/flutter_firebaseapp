@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebaseapp/src/common_widgets/template_button.dart';
 import 'package:flutter_firebaseapp/src/features/controllers/radiobutton_controller.dart';
+import 'package:flutter_firebaseapp/src/models/user.dart';
 
 class DisplayButtomSheetComboboxTemplate extends StatelessWidget {
   final List<String> statuslist;
   final String? selectedvalue;
+  final String userEmail;
 
   const DisplayButtomSheetComboboxTemplate({
     super.key,
     required this.statuslist,
     required this.selectedvalue,
+    required this.userEmail,
   });
 
   @override
   Widget build(BuildContext context) {
-    String? selectedvalue_ = selectedvalue;
+    // String? selectedvalue_ = selectedvalue;
     return GestureDetector(
       onTap: () {
         displayBottomSheetComboboxTemplate(
           context,
           statuslist,
-          selectedvalue_,
+          selectedvalue,
         );
       },
       child: const Icon(
@@ -36,6 +40,7 @@ class DisplayButtomSheetComboboxTemplate extends StatelessWidget {
   ) {
     return showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.white.withOpacity(0.9),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(30),
@@ -49,9 +54,27 @@ class DisplayButtomSheetComboboxTemplate extends StatelessWidget {
           5,
           5,
         ),
-        child: RadioButtonController(
-          statuslist: statuslist,
-          selectedvalue: selectedvalue,
+        child: ListView(
+          children: [
+            RadioButtonController(
+              statuslist: statuslist,
+              selectedvalue: selectedvalue,
+              getselectedvalue: (getedvalue) {
+                selectedvalue = getedvalue;
+                // print(selectedvalue);
+              },
+            ),
+            ButtonTemplate(
+              buttonText: 'Submit Form',
+              onPressed: () {
+                User.updateUserStatus(
+                  profileEmail: userEmail,
+                  profileStatus: selectedvalue = selectedvalue ?? 'Candidate',
+                );
+                Navigator.pop(context);
+              },
+            )
+          ],
         ),
       ),
     );
