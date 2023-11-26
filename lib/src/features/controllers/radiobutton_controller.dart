@@ -36,10 +36,11 @@ class _RadioButtonControllerState extends State<RadioButtonController> {
               ),
             ),
             onChanged: (val) {
-              setState(() {
-                selectedvalue = val;
-                print(selectedvalue);
-              });
+              setState(
+                () {
+                  selectedvalue = val;
+                },
+              );
             },
             toggleable: true,
             selected: true,
@@ -47,7 +48,7 @@ class _RadioButtonControllerState extends State<RadioButtonController> {
           const SizedBox(
             height: 10,
           ),
-        }
+        },
       ],
     );
   }

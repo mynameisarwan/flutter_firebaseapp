@@ -4,6 +4,7 @@ import 'package:flutter_firebaseapp/src/features/controllers/radiobutton_control
 class DisplayButtomSheetComboboxTemplate extends StatelessWidget {
   final List<String> statuslist;
   final String? selectedvalue;
+
   const DisplayButtomSheetComboboxTemplate({
     super.key,
     required this.statuslist,
@@ -28,40 +29,6 @@ class DisplayButtomSheetComboboxTemplate extends StatelessWidget {
     );
   }
 
-// class DisplayButtomSheetComboboxTemplate extends StatefulWidget {
-//   final List<String> statuslist;
-//   final String? selectedvalue;
-//   const DisplayButtomSheetComboboxTemplate({
-//     super.key,
-//     required this.statuslist,
-//     required this.selectedvalue,
-//   });
-
-//   @override
-//   State<DisplayButtomSheetComboboxTemplate> createState() =>
-//       _DisplayButtomSheetComboboxTemplateState();
-// }
-
-// class _DisplayButtomSheetComboboxTemplateState
-//     extends State<DisplayButtomSheetComboboxTemplate> {
-//   @override
-//   Widget build(BuildContext context) {
-//     String? selectedvalue_ = widget.selectedvalue;
-//     return GestureDetector(
-//       onTap: () {
-//         displayBottomSheetComboboxTemplate(
-//           context,
-//           widget.statuslist,
-//           selectedvalue_,
-//         );
-//       },
-//       child: const Icon(
-//         Icons.arrow_drop_down_circle_outlined,
-//         color: Colors.white,
-//       ),
-//     );
-//   }
-
   Future displayBottomSheetComboboxTemplate(
     BuildContext context,
     List<String> statuslist,
@@ -85,13 +52,6 @@ class DisplayButtomSheetComboboxTemplate extends StatelessWidget {
         child: RadioButtonController(
           statuslist: statuslist,
           selectedvalue: selectedvalue,
-          // onchage: (val) {
-          //   setState(
-          //     () {
-          //       selectedvalue = val;
-          //     },
-          //   );
-          // },
         ),
       ),
     );

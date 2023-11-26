@@ -283,6 +283,7 @@ class UserScreen extends StatelessWidget {
                                     ),
                                   ),
                                   FittedBox(
+                                    // userStatusTextController
                                     child: DisplayButtomSheetComboboxTemplate(
                                       selectedvalue: user.profileStatus,
                                       statuslist: const [
@@ -297,9 +298,6 @@ class UserScreen extends StatelessWidget {
                             ),
                           ),
                         ],
-                      ),
-                      SizedBox(
-                        height: screenSize.height / 50,
                       ),
                       ButtonTemplate(
                         buttonText: 'Submit Form',
