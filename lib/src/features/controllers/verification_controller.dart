@@ -1,20 +1,46 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/models/user.dart';
 import 'package:flutter_firebaseapp/src/screens/navigation_screen.dart';
 import 'package:flutter_firebaseapp/src/screens/profile_screen.dart';
-// import 'package:flutter_firebaseapp/src/screens/profile_screen.dart';
 
-class VerificationController extends StatelessWidget {
+class VerificationController extends StatefulWidget {
   const VerificationController({super.key, required this.userEmail});
   final String userEmail;
+
+  @override
+  State<VerificationController> createState() => _VerificationControllerState();
+}
+
+class _VerificationControllerState extends State<VerificationController> {
+  late bool _visible;
+  @override
+  void initState() {
+    _visible = false;
+    super.initState();
+    Future.delayed(
+      const Duration(seconds: 5),
+      () {
+        if (mounted) {
+          setState(
+            () {
+              //tells the widget builder to rebuild again because ui has updated
+              _visible =
+                  true; //update the variable declare this under your class so its accessible for both your widget build and initState which is located under widget build{}
+            },
+          );
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var db = FirebaseFirestore.instance;
 
     Future<User?>? readUser() async {
-      final docUser = db.collection('Users').doc(userEmail);
+      final docUser = db.collection('Users').doc(widget.userEmail);
 
       final sel = await docUser.get();
       if (sel.exists) {
@@ -35,31 +61,86 @@ class VerificationController extends StatelessWidget {
           String status = user.profileStatus;
           return status == 'Candidate'
               ? ProfileScreen(
-                  userEmail: userEmail,
+                  userEmail: widget.userEmail,
                 )
               : NavigationScreen(
-                  userEmail: userEmail,
+                  userEmail: widget.userEmail,
                 );
         } else {
-          return Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color.fromARGB(255, 255, 94, 94),
-                  Color.fromARGB(255, 239, 126, 46),
-                  Color.fromARGB(255, 237, 196, 18),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
+          return Scaffold(
+            body: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color.fromARGB(255, 255, 94, 94),
+                    Color.fromARGB(255, 239, 126, 46),
+                    Color.fromARGB(255, 237, 196, 18),
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
               ),
-            ),
-            child: const Center(
-              child: CircularProgressIndicator(),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Visibility(
+                      visible: _visible,
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          children: [
+                            const TextSpan(
+                              text: 'User ',
+                            ),
+                            TextSpan(
+                              text: widget.userEmail,
+                              style: const TextStyle(
+                                color: Colors.purple,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const TextSpan(
+                              text: ' Profile  Update, please go to ',
+                            ),
+                            TextSpan(
+                              text: 'Profile Page ',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          ProfileScreen(
+                                        userEmail: widget.userEmail,
+                                      ),
+                                    ),
+                                  );
+                                },
+                            ),
+                            const TextSpan(
+                              text: 'page ',
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           );
         }
       },
     );
-    // return ProfileScreen(userEmail: userEmail);
   }
 }
