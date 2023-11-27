@@ -39,6 +39,16 @@ class User {
         profileStatus: json['ProfileStatus'],
       );
 
+  static User fromDocSnap(DocumentSnapshot<Object?> json) => User(
+        profileName: json['ProfileName'],
+        profileEmail: json['ProfileEmail'],
+        phoneNumber: json['PhoneNumber'],
+        profileAddress: json['ProfileAddress'],
+        registerDate: (json['RegisterDate'] as Timestamp).toDate(),
+        profileGender: json['ProfileGender'],
+        profileStatus: json['ProfileStatus'],
+      );
+
   static Future updateUserStatus({
     required String profileEmail,
     required String profileStatus,

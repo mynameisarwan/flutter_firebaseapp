@@ -125,8 +125,21 @@ class UsersScreen extends StatelessWidget {
                 ],
               );
             } else {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color.fromARGB(255, 255, 94, 94),
+                      Color.fromARGB(255, 239, 126, 46),
+                      Color.fromARGB(255, 237, 196, 18),
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
               );
             }
           },
