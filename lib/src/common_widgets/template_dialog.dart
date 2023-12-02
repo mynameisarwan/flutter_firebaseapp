@@ -8,6 +8,7 @@ Future openDialog(
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        contentPadding: const EdgeInsets.all(10),
         backgroundColor: Colors.black,
         title: const Text(
           'Asstest',
@@ -20,16 +21,21 @@ Future openDialog(
           TextInputType.text,
         ),
         actions: [
-          OutlinedButton(
-            style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: Colors.amber),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 30,
             ),
-            onPressed: () {},
-            child: const Text(
-              'Submit',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.amber,
+            child: OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: Colors.amber),
+              ),
+              onPressed: () {},
+              child: const Text(
+                'Submit',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.amber,
+                ),
               ),
             ),
           ),
