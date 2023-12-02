@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/models/user.dart';
 import 'package:flutter_firebaseapp/src/screens/navigation_screen.dart';
 import 'package:flutter_firebaseapp/src/screens/profile_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class VerificationController extends StatefulWidget {
   const VerificationController({super.key, required this.userEmail});
@@ -15,6 +18,8 @@ class VerificationController extends StatefulWidget {
 
 class _VerificationControllerState extends State<VerificationController> {
   late bool _visible;
+  String userEmail = "";
+  var db = FirebaseFirestore.instance;
   @override
   void initState() {
     _visible = false;
@@ -35,22 +40,31 @@ class _VerificationControllerState extends State<VerificationController> {
     );
   }
 
+//method menyimpan value kedalam local storage #nantinya mau coba dibuat method terpisah kedalam controller sendiri
+  void setReference() async {
+    final pref = await SharedPreferences.getInstance();
+
+    final myData = json.encode({'userEmail': userEmail});
+
+    pref.setString('locData', myData);
+  }
+
+  Future<User?>? readUser() async {
+    final docUser = db.collection('Users').doc(widget.userEmail);
+
+    final sel = await docUser.get();
+    if (sel.exists) {
+      // return null;
+      userEmail = widget.userEmail;
+      setReference();
+      return User.fromJason(sel.data()!);
+    } else {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    var db = FirebaseFirestore.instance;
-
-    Future<User?>? readUser() async {
-      final docUser = db.collection('Users').doc(widget.userEmail);
-
-      final sel = await docUser.get();
-      if (sel.exists) {
-        // return null;
-        return User.fromJason(sel.data()!);
-      } else {
-        return null;
-      }
-    }
-
     return FutureBuilder<User?>(
       future: readUser(),
       builder: (context, snapshot) {
