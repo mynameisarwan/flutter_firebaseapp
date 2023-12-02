@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_firebaseapp/src/common_widgets/template_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AssetsScreen extends StatefulWidget {
@@ -12,7 +13,7 @@ class AssetsScreen extends StatefulWidget {
 
 class _AssetsScreenState extends State<AssetsScreen> {
   String? userEmail;
-
+  TextEditingController controller = TextEditingController();
   Future<void> getReference() async {
     final pref = await SharedPreferences.getInstance();
     if (pref.containsKey('locData')) {
@@ -24,7 +25,9 @@ class _AssetsScreenState extends State<AssetsScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return FutureBuilder(
       future: getReference(),
       builder: (context, _) => Scaffold(
@@ -43,7 +46,12 @@ class _AssetsScreenState extends State<AssetsScreen> {
             Icons.add,
             color: Colors.amber,
           ),
-          onPressed: () {},
+          onPressed: () {
+            openDialog(
+              context,
+              controller,
+            );
+          },
         ),
       ),
     );
