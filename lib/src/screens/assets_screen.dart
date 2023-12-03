@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_firebaseapp/src/common_widgets/template_dialog.dart';
+import 'package:flutter_firebaseapp/src/features/controllers/dialog_controller.dart';
+// import 'package:flutter_firebaseapp/src/features/controllers/dialog_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AssetsScreen extends StatefulWidget {
@@ -39,20 +40,25 @@ class _AssetsScreenState extends State<AssetsScreen> {
             style: const TextStyle(color: Colors.amber),
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          shape: const CircleBorder(),
-          backgroundColor: Colors.black,
-          child: const Icon(
-            Icons.add,
-            color: Colors.amber,
-          ),
-          onPressed: () {
-            openDialog(
-              context,
-              controller,
-            );
-          },
+        floatingActionButton: AlertDialogController(
+          controller: controller,
+          userEmail: userEmail,
         ),
+        // floatingActionButton: FloatingActionButton(
+        //   shape: const CircleBorder(),
+        //   backgroundColor: Colors.black,
+        //   child: const Icon(
+        //     Icons.add,
+        //     color: Colors.amber,
+        //   ),
+        //   onPressed: () {
+        //     // openAssetDialog(
+        //     //   context,
+        //     //   controller,
+        //     //   userEmail!,
+        //     // );
+        //   },
+        // ),
       ),
     );
   }
