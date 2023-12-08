@@ -47,4 +47,43 @@ class Asset {
     final asset = db.collection('Assets').doc(assetType);
     await asset.set({'CreateDate': DateTime.now(), 'CreateBy': userEmail});
   }
+
+  static Future<Asset?>? readAsset(String assetId) async {
+    var db = FirebaseFirestore.instance;
+    final docAsset = db.collection('Assets').doc(assetId);
+
+    final sel = await docAsset.get();
+    // print('the value is $sel');
+    if (sel.exists) {
+      return Asset.fromJason(sel.data()!);
+    } else {
+      return null;
+    }
+  }
+
+  static Future<bool?>? isExists(String assetId) async {
+    var db = FirebaseFirestore.instance;
+    final docAsset = db.collection('Assets').doc(assetId);
+
+    final sel = await docAsset.get();
+    // print('the value is $sel');
+    if (sel.exists) {
+      return true;
+    } else {
+      return null;
+    }
+  }
+
+  static Future<String?>? isAssetExists(String assetId) async {
+    var db = FirebaseFirestore.instance;
+    final docUser = db.collection('Assets').doc(assetId);
+
+    final sel = await docUser.get();
+    if (sel.exists) {
+      // return null;
+      return 'Asset $assetId is Already Exists';
+    } else {
+      return null;
+    }
+  }
 }

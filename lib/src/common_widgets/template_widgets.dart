@@ -110,9 +110,6 @@ TextFormField textFieldTemplFormWithNotif(
   String? Function(String?)? validator,
 ) {
   return TextFormField(
-    // validator: () {
-    //   return '';
-    // },
     validator: validator,
     controller: controller,
     style: TextStyle(

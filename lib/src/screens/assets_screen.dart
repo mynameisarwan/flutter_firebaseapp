@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/features/controllers/dialog_controller.dart';
-// import 'package:flutter_firebaseapp/src/features/controllers/dialog_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AssetsScreen extends StatefulWidget {
@@ -14,7 +12,7 @@ class AssetsScreen extends StatefulWidget {
 
 class _AssetsScreenState extends State<AssetsScreen> {
   String? userEmail;
-  TextEditingController controller = TextEditingController();
+  String? testAja;
   Future<void> getReference() async {
     final pref = await SharedPreferences.getInstance();
     if (pref.containsKey('locData')) {
@@ -41,24 +39,8 @@ class _AssetsScreenState extends State<AssetsScreen> {
           ),
         ),
         floatingActionButton: AlertDialogController(
-          controller: controller,
           userEmail: userEmail,
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   shape: const CircleBorder(),
-        //   backgroundColor: Colors.black,
-        //   child: const Icon(
-        //     Icons.add,
-        //     color: Colors.amber,
-        //   ),
-        //   onPressed: () {
-        //     // openAssetDialog(
-        //     //   context,
-        //     //   controller,
-        //     //   userEmail!,
-        //     // );
-        //   },
-        // ),
       ),
     );
   }
