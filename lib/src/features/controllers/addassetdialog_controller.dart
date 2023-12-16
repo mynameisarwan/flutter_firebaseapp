@@ -99,10 +99,3 @@ class _AddAssetDialogControllerState extends State<AddAssetDialogController> {
     );
   }
 }
-
-String? verification(String? inputValue) {
-  if (inputValue!.isEmpty) {
-    return 'Empty Field';
-  }
-  return null;
-}

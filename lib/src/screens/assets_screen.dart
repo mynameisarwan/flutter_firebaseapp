@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/features/controllers/addassetdialog_controller.dart';
+import 'package:flutter_firebaseapp/src/features/controllers/mandassetdialog_controller.dart';
 import 'package:flutter_firebaseapp/src/models/asset.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -71,24 +72,8 @@ class _AssetsScreenState extends State<AssetsScreen> {
                             ),
                           ),
                           const Spacer(),
-                          GestureDetector(
-                            onTap: () async {
-                              // String msg = await Asset.deleteDocById(
-                              //     asset.assetType!);
-                              // if (msg.contains('Error')) {
-                              //   setState(
-                              //     () {
-                              //       errMsg = msg;
-                              //     },
-                              //   );
-                              // } else {
-                              //   setState(() {});
-                              // }
-                            },
-                            child: const Icon(
-                              Icons.menu_outlined,
-                              color: Colors.amber,
-                            ),
+                          ManAssetDialgoController(
+                            asset: asset.assetType!,
                           ),
                         ],
                       ),
