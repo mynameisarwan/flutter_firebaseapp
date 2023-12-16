@@ -77,6 +77,11 @@ class _AddAssetDialogControllerState extends State<AddAssetDialogController> {
                                 assetType: controller.text,
                                 userEmail: widget.userEmail!,
                               );
+                              if (context.mounted) {
+                                // const AssetsScreen();
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop();
+                              }
                             }
                           }
                         },

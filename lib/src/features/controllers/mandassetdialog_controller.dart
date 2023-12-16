@@ -82,6 +82,10 @@ class ManAssetDialgoController extends StatelessWidget {
                             );
                           } else {
                             setState(() {});
+                            if (context.mounted) {
+                              // const AssetsScreen();
+                              Navigator.of(context, rootNavigator: true).pop();
+                            }
                           }
                         },
                         child: const Icon(
