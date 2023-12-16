@@ -1,22 +1,20 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
 import 'package:flutter_firebaseapp/src/models/asset.dart';
-// import 'package:get/get.dart';
 
-class AlertDialogController extends StatefulWidget {
+class AddAssetDialogController extends StatefulWidget {
   final String? userEmail;
-  const AlertDialogController({
+  const AddAssetDialogController({
     super.key,
     required this.userEmail,
   });
 
   @override
-  State<AlertDialogController> createState() => _AlertDialogControllerState();
+  State<AddAssetDialogController> createState() =>
+      _AddAssetDialogControllerState();
 }
 
-class _AlertDialogControllerState extends State<AlertDialogController> {
+class _AddAssetDialogControllerState extends State<AddAssetDialogController> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController controller = TextEditingController();
   String errMsg = '';

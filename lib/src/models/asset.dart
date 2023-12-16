@@ -1,18 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Asset {
-  final String assetType; //madu,botol,sticker,spanduk
-  final DateTime transDate;
-  final num transQty;
-  final num transTotalPrice;
-  final String transDescription;
-
+  final String? assetType; //madu,botol,sticker,spanduk
+  final DateTime? transDate;
+  final num? transQty;
+  final num? transTotalPrice;
+  final String? transDescription;
+  final DateTime createdDate;
   Asset({
     required this.assetType,
     required this.transDate,
     required this.transQty,
     required this.transTotalPrice,
     required this.transDescription,
+    required this.createdDate,
   });
 
   Map<String, dynamic> toJason() => {
@@ -25,10 +26,15 @@ class Asset {
 
   static Asset fromJason(Map<String, dynamic> json) => Asset(
         assetType: json['AssetType'],
-        transDate: (json['TransDate'] as Timestamp).toDate(),
-        transQty: (json['Trans.Qty'] as num),
-        transTotalPrice: (json['Trans.TotalPrice'] as num),
+        transDate: json['TransDate'] == null
+            ? null
+            : (json['TransDate'] as Timestamp).toDate(),
+        transQty: json['Trans.Qty'] == null ? null : (json['Trans.Qty'] as num),
+        transTotalPrice: json['Trans.TotalPrice'] == null
+            ? null
+            : (json['Trans.TotalPrice'] as num),
         transDescription: json['Trans.Description'],
+        createdDate: (json['CreateDate'] as Timestamp).toDate(),
       );
 
   static Asset fromDocSnap(DocumentSnapshot<Object?> json) => Asset(
@@ -37,6 +43,7 @@ class Asset {
         transQty: (json['Trans.Qty'] as num),
         transTotalPrice: (json['Trans.TotalPrice'] as num),
         transDescription: json['Trans.Description'],
+        createdDate: (json['CreateDate'] as Timestamp).toDate(),
       );
 
   static Future addAssetCollection({
@@ -59,6 +66,55 @@ class Asset {
     } else {
       return null;
     }
+  }
+
+  static Future<List<Asset>> readAssets() async {
+    var db = FirebaseFirestore.instance;
+    return db
+        .collection('Assets')
+        .snapshots()
+        .map(
+          (ss) => ss.docs
+              .map(
+                (doc) => Asset.fromJason(
+                  doc.data(),
+                ),
+              )
+              .toList(),
+        )
+        .first;
+  }
+
+  static Future<String> deleteDocById(String docId) async {
+    var db = FirebaseFirestore.instance;
+    return await db.collection('Assets').doc(docId).delete().then(
+      (value) => 'the Data has been deleted',
+      onError: (e) {
+        return 'Error : ${e.toString()}';
+      },
+    );
+  }
+
+  static Future<List<Asset>> readAssets_() async {
+    var db = FirebaseFirestore.instance;
+    return db
+        .collection('Assets')
+        .snapshots()
+        .map(
+          (ss) => ss.docs.map((doc) {
+            return Asset(
+              assetType: doc.reference.id,
+              transDate: doc.data()['Trans.Date'] == null
+                  ? null
+                  : (doc.data()['Trans.Date'] as Timestamp).toDate(),
+              transQty: doc.data()['Trans.Qty'],
+              transTotalPrice: doc.data()['Trans.TotalPrice'],
+              transDescription: doc.data()['Trans.Description'],
+              createdDate: (doc.data()['CreateDate'] as Timestamp).toDate(),
+            );
+          }).toList(),
+        )
+        .first;
   }
 
   static Future<bool?>? isExists(String assetId) async {

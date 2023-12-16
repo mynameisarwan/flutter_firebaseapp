@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebaseapp/src/features/controllers/dialog_controller.dart';
+import 'package:flutter_firebaseapp/src/features/controllers/addassetdialog_controller.dart';
+import 'package:flutter_firebaseapp/src/models/asset.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AssetsScreen extends StatefulWidget {
@@ -12,8 +13,9 @@ class AssetsScreen extends StatefulWidget {
 
 class _AssetsScreenState extends State<AssetsScreen> {
   String? userEmail;
-  String? testAja;
-  Future<void> getReference() async {
+  String errMsg = '';
+
+  Future<List<Asset>> getReference() async {
     final pref = await SharedPreferences.getInstance();
     if (pref.containsKey('locData')) {
       final myData =
@@ -21,6 +23,8 @@ class _AssetsScreenState extends State<AssetsScreen> {
 
       userEmail = myData['userEmail'];
     }
+
+    return await Asset.readAssets_();
   }
 
   @override
@@ -29,19 +33,78 @@ class _AssetsScreenState extends State<AssetsScreen> {
   ) {
     return FutureBuilder(
       future: getReference(),
-      builder: (context, _) => Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          automaticallyImplyLeading: false,
-          title: Text(
-            'Assets $userEmail',
-            style: const TextStyle(color: Colors.amber),
-          ),
-        ),
-        floatingActionButton: AlertDialogController(
-          userEmail: userEmail,
-        ),
-      ),
+      builder: (context, AsyncSnapshot<List<Asset>> snapshot) {
+        if (snapshot.hasError) {
+          return Text('Error : ${snapshot.error}');
+        }
+        if (snapshot.hasData) {
+          final assets = snapshot.data!;
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.black,
+              automaticallyImplyLeading: false,
+              title: Text(
+                'Assets $userEmail',
+                style: const TextStyle(color: Colors.amber),
+              ),
+            ),
+            body: ListView(
+              children: [
+                for (var asset in assets) ...[
+                  Card(
+                    color: Colors.black,
+                    child: ListTile(
+                      leading: const CircleAvatar(
+                        backgroundColor: Colors.amber,
+                        child: Icon(
+                          Icons.person_2_outlined,
+                          color: Colors.white,
+                        ),
+                      ),
+                      title: Row(
+                        children: [
+                          Text(
+                            asset.assetType!,
+                            style: const TextStyle(
+                              color: Colors.amber,
+                              fontSize: 16,
+                            ),
+                          ),
+                          const Spacer(),
+                          GestureDetector(
+                            onTap: () async {
+                              // String msg = await Asset.deleteDocById(
+                              //     asset.assetType!);
+                              // if (msg.contains('Error')) {
+                              //   setState(
+                              //     () {
+                              //       errMsg = msg;
+                              //     },
+                              //   );
+                              // } else {
+                              //   setState(() {});
+                              // }
+                            },
+                            child: const Icon(
+                              Icons.menu_outlined,
+                              color: Colors.amber,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ]
+              ],
+            ),
+            floatingActionButton: AddAssetDialogController(
+              userEmail: userEmail,
+            ),
+          );
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
 }
