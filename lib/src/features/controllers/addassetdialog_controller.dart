@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
 import 'package:flutter_firebaseapp/src/models/asset.dart';
+import 'package:flutter_firebaseapp/src/screens/navigation_screen.dart';
 
 class AddAssetDialogController extends StatefulWidget {
   final String? userEmail;
@@ -79,8 +80,16 @@ class _AddAssetDialogControllerState extends State<AddAssetDialogController> {
                               );
                               if (context.mounted) {
                                 // const AssetsScreen();
-                                Navigator.of(context, rootNavigator: true)
-                                    .pop();
+                                // Navigator.of(context, rootNavigator: true)
+                                //     .pop();
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => NavigationScreen(
+                                      userEmail: widget.userEmail!,
+                                    ),
+                                  ),
+                                );
                               }
                             }
                           }

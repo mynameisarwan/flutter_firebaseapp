@@ -74,6 +74,7 @@ class _AssetsScreenState extends State<AssetsScreen> {
                           const Spacer(),
                           ManAssetDialgoController(
                             asset: asset.assetType!,
+                            userEmail: userEmail!,
                           ),
                         ],
                       ),

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
 import 'package:flutter_firebaseapp/src/models/asset.dart';
+import 'package:flutter_firebaseapp/src/screens/navigation_screen.dart';
 
 class ManAssetDialgoController extends StatelessWidget {
   final String asset;
+  final String userEmail;
   const ManAssetDialgoController({
     super.key,
     required this.asset,
+    required this.userEmail,
   });
 
   @override
@@ -84,7 +87,15 @@ class ManAssetDialgoController extends StatelessWidget {
                             setState(() {});
                             if (context.mounted) {
                               // const AssetsScreen();
-                              Navigator.of(context, rootNavigator: true).pop();
+                              // Navigator.of(context, rootNavigator: true).pop();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => NavigationScreen(
+                                    userEmail: userEmail,
+                                  ),
+                                ),
+                              );
                             }
                           }
                         },
