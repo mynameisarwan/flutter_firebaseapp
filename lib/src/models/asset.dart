@@ -6,7 +6,7 @@ class Asset {
   final num? transQty;
   final num? transTotalPrice;
   final String? transDescription;
-  final DateTime createdDate;
+  final DateTime? createdDate;
   Asset({
     required this.assetType,
     required this.transDate,
@@ -110,7 +110,10 @@ class Asset {
               transQty: doc.data()['Trans.Qty'],
               transTotalPrice: doc.data()['Trans.TotalPrice'],
               transDescription: doc.data()['Trans.Description'],
-              createdDate: (doc.data()['CreateDate'] as Timestamp).toDate(),
+              // createdDate: (doc.data()['CreateDate'] as Timestamp).toDate(),
+              createdDate: doc.data()['CreateDate'] == null
+                  ? null
+                  : (doc.data()['CreateDate'] as Timestamp).toDate(),
             );
           }).toList(),
         )

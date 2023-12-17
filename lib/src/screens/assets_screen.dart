@@ -15,82 +15,106 @@ class AssetsScreen extends StatefulWidget {
 class _AssetsScreenState extends State<AssetsScreen> {
   String? userEmail;
   String errMsg = '';
+  List assets = [];
 
-  Future<List<Asset>> getReference() async {
+  // Future<List<Asset>> getReference() async {
+  //   final pref = await SharedPreferences.getInstance();
+  //   if (pref.containsKey('locData')) {
+  //     final myData =
+  //         json.decode(pref.getString('locData')!) as Map<String, dynamic>;
+
+  //     userEmail = myData['userEmail'];
+  //   }
+  //   return await Asset.readAssets_();
+  // }
+
+  getReference() async {
     final pref = await SharedPreferences.getInstance();
     if (pref.containsKey('locData')) {
-      final myData =
-          json.decode(pref.getString('locData')!) as Map<String, dynamic>;
-
-      userEmail = myData['userEmail'];
+      return json.decode(pref.getString('locData')!) as Map<String, dynamic>;
+      // userEmail = myData['userEmail'];
     }
+  }
 
+  getAsset() async {
     return await Asset.readAssets_();
+  }
+
+  @override
+  void initState() {
+    //ambil seassionnya
+    getReference().then(
+      (data) {
+        setState(
+          () {
+            userEmail = data['userEmail'];
+          },
+        );
+      },
+    );
+//ambil database assetnya
+    getAsset().then(
+      (data) {
+        setState(
+          () {
+            assets = data;
+          },
+        );
+      },
+    );
+    super.initState();
   }
 
   @override
   Widget build(
     BuildContext context,
   ) {
-    return FutureBuilder(
-      future: getReference(),
-      builder: (context, AsyncSnapshot<List<Asset>> snapshot) {
-        if (snapshot.hasError) {
-          return Text('Error : ${snapshot.error}');
-        }
-        if (snapshot.hasData) {
-          final assets = snapshot.data!;
-          return Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.black,
-              automaticallyImplyLeading: false,
-              title: Text(
-                'Assets $userEmail',
-                style: const TextStyle(color: Colors.amber),
-              ),
-            ),
-            body: ListView(
-              children: [
-                for (var asset in assets) ...[
-                  Card(
-                    color: Colors.black,
-                    child: ListTile(
-                      leading: const CircleAvatar(
-                        backgroundColor: Colors.amber,
-                        child: Icon(
-                          Icons.person_2_outlined,
-                          color: Colors.white,
-                        ),
-                      ),
-                      title: Row(
-                        children: [
-                          Text(
-                            asset.assetType!,
-                            style: const TextStyle(
-                              color: Colors.amber,
-                              fontSize: 16,
-                            ),
-                          ),
-                          const Spacer(),
-                          ManAssetDialgoController(
-                            asset: asset.assetType!,
-                            userEmail: userEmail!,
-                          ),
-                        ],
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Assets $userEmail',
+          style: const TextStyle(color: Colors.amber),
+        ),
+      ),
+      body: ListView(
+        children: [
+          for (var asset in assets) ...[
+            Card(
+              color: Colors.black,
+              child: ListTile(
+                leading: const CircleAvatar(
+                  backgroundColor: Colors.amber,
+                  child: Icon(
+                    Icons.person_2_outlined,
+                    color: Colors.white,
+                  ),
+                ),
+                title: Row(
+                  children: [
+                    Text(
+                      asset.assetType!,
+                      style: const TextStyle(
+                        color: Colors.amber,
+                        fontSize: 16,
                       ),
                     ),
-                  )
-                ]
-              ],
-            ),
-            floatingActionButton: AddAssetDialogController(
-              userEmail: userEmail,
-            ),
-          );
-        } else {
-          return const Center(child: CircularProgressIndicator());
-        }
-      },
+                    const Spacer(),
+                    ManAssetDialgoController(
+                      asset: asset.assetType!,
+                      userEmail: userEmail!,
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ]
+        ],
+      ),
+      floatingActionButton: AddAssetDialogController(
+        userEmail: userEmail,
+      ),
     );
   }
 }
