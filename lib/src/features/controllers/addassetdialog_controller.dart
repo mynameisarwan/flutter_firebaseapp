@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
 import 'package:flutter_firebaseapp/src/models/asset.dart';
-import 'package:flutter_firebaseapp/src/screens/navigation_screen.dart';
+// import 'package:flutter_firebaseapp/src/screens/assets_screen.dart';
+// import 'package:flutter_firebaseapp/src/screens/navigation_screen.dart';
 
 class AddAssetDialogController extends StatefulWidget {
   final String? userEmail;
+  final Function addassetlist;
   const AddAssetDialogController({
     super.key,
     required this.userEmail,
+    required this.addassetlist,
   });
 
   @override
@@ -74,22 +77,19 @@ class _AddAssetDialogControllerState extends State<AddAssetDialogController> {
                                 },
                               );
                             } else {
-                              await Asset.addAssetCollection(
-                                assetType: controller.text,
-                                userEmail: widget.userEmail!,
-                              );
                               if (context.mounted) {
-                                // const AssetsScreen();
-                                // Navigator.of(context, rootNavigator: true)
-                                //     .pop();
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => NavigationScreen(
-                                      userEmail: widget.userEmail!,
-                                    ),
+                                widget.addassetlist(
+                                  Asset(
+                                    assetType: controller.text,
+                                    transDate: null,
+                                    transQty: null,
+                                    transTotalPrice: null,
+                                    transDescription: null,
+                                    createdDate: DateTime.now(),
                                   ),
                                 );
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop();
                               }
                             }
                           }

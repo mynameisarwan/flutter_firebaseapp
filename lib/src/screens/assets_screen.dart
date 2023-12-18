@@ -15,19 +15,7 @@ class AssetsScreen extends StatefulWidget {
 class _AssetsScreenState extends State<AssetsScreen> {
   String? userEmail;
   String errMsg = '';
-  List assets = [];
-
-  // Future<List<Asset>> getReference() async {
-  //   final pref = await SharedPreferences.getInstance();
-  //   if (pref.containsKey('locData')) {
-  //     final myData =
-  //         json.decode(pref.getString('locData')!) as Map<String, dynamic>;
-
-  //     userEmail = myData['userEmail'];
-  //   }
-  //   return await Asset.readAssets_();
-  // }
-
+  List<Asset> assets = [];
   getReference() async {
     final pref = await SharedPreferences.getInstance();
     if (pref.containsKey('locData')) {
@@ -38,6 +26,19 @@ class _AssetsScreenState extends State<AssetsScreen> {
 
   getAsset() async {
     return await Asset.readAssets_();
+  }
+
+  addassetlist(Asset asset) async {
+    setState(() {
+      assets.add(asset);
+      assets.sort(
+        (a, b) => a.assetType!.compareTo(b.assetType!),
+      );
+    });
+    await Asset.addAssetCollection(
+      assetType: asset.assetType!,
+      userEmail: userEmail!,
+    );
   }
 
   @override
@@ -114,6 +115,7 @@ class _AssetsScreenState extends State<AssetsScreen> {
       ),
       floatingActionButton: AddAssetDialogController(
         userEmail: userEmail,
+        addassetlist: addassetlist,
       ),
     );
   }
