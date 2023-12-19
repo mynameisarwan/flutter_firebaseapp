@@ -115,8 +115,10 @@ TextFormField textFieldTemplFormWithNotif(
   IconData icon,
   TextInputType inputType,
   String? Function(String?)? validator,
+  bool readOnly,
 ) {
   return TextFormField(
+    readOnly: readOnly,
     validator: validator,
     controller: controller,
     style: TextStyle(

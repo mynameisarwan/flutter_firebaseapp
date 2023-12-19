@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
 import 'package:flutter_firebaseapp/src/models/asset.dart';
 import 'package:flutter_firebaseapp/src/screens/assettransaction_screen.dart';
-import 'package:flutter_firebaseapp/src/screens/navigation_screen.dart';
+// import 'package:flutter_firebaseapp/src/screens/navigation_screen.dart';
 
 class ManAssetDialgoController extends StatelessWidget {
   final String asset;
   final String userEmail;
+  final Function delassetlist;
   const ManAssetDialgoController({
     super.key,
     required this.asset,
     required this.userEmail,
+    required this.delassetlist,
   });
 
   @override
@@ -48,6 +50,7 @@ class ManAssetDialgoController extends StatelessWidget {
                         Icons.data_saver_off,
                         TextInputType.text,
                         verification,
+                        true,
                       ),
                       const SizedBox(
                         height: 20,
@@ -116,29 +119,26 @@ class ManAssetDialgoController extends StatelessWidget {
                                 },
                               ),
                             ),
-                            onPressed: () async {
-                              String msg =
-                                  await Asset.deleteDocById(controller.text);
-                              if (msg.contains('Error')) {
-                                setState(
-                                  () {
-                                    errMsg = msg;
-                                  },
-                                );
-                              } else {
-                                setState(() {});
-                                if (context.mounted) {
-                                  // const AssetsScreen();
-                                  // Navigator.of(context, rootNavigator: true).pop();
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => NavigationScreen(
-                                        userEmail: userEmail,
-                                      ),
-                                    ),
-                                  );
-                                }
+                            onPressed: () {
+                              if (context.mounted) {
+                                delassetlist(Asset(
+                                  assetType: controller.text,
+                                  transDate: null,
+                                  transQty: null,
+                                  transDescription: null,
+                                  transTotalPrice: null,
+                                  createdDate: DateTime.now(),
+                                ));
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop();
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) => NavigationScreen(
+                                //       userEmail: userEmail,
+                                //     ),
+                                //   ),
+                                // );
                               }
                             },
                             child: const Icon(

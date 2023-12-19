@@ -41,6 +41,18 @@ class _AssetsScreenState extends State<AssetsScreen> {
     );
   }
 
+  delassetlist(Asset asset) async {
+    setState(
+      () {
+        assets.removeWhere((x) => x.assetType! == asset.assetType);
+        assets.sort(
+          (a, b) => a.assetType!.compareTo(b.assetType!),
+        );
+      },
+    );
+    await Asset.deleteDocById(asset.assetType!);
+  }
+
   @override
   void initState() {
     //ambil seassionnya
@@ -105,6 +117,7 @@ class _AssetsScreenState extends State<AssetsScreen> {
                     ManAssetDialgoController(
                       asset: asset.assetType!,
                       userEmail: userEmail!,
+                      delassetlist: delassetlist,
                     ),
                   ],
                 ),

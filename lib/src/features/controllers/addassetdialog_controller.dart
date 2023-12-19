@@ -54,6 +54,7 @@ class _AddAssetDialogControllerState extends State<AddAssetDialogController> {
                       Icons.data_saver_off,
                       TextInputType.text,
                       verification,
+                      false,
                     ),
                     const SizedBox(
                       height: 12,
