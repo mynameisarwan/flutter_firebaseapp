@@ -123,10 +123,6 @@ class ManAssetDialgoController extends StatelessWidget {
                               if (context.mounted) {
                                 delassetlist(Asset(
                                   assetType: controller.text,
-                                  transDate: null,
-                                  transQty: null,
-                                  transDescription: null,
-                                  transTotalPrice: null,
                                   createdDate: DateTime.now(),
                                 ));
                                 Navigator.of(context, rootNavigator: true)

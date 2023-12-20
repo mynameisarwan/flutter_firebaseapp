@@ -102,6 +102,56 @@ TextFormField textFieldTemplForm(
   );
 }
 
+TextFormField textFieldCalendarTemplForm(
+  TextEditingController controller,
+  String labelText,
+  IconData icon,
+  TextInputType inputType,
+  void Function()? onTab,
+) {
+  return TextFormField(
+    controller: controller,
+    readOnly: true,
+    style: TextStyle(
+      color: Colors.white.withOpacity(0.9),
+    ),
+    onTap: onTab,
+    keyboardType: inputType,
+    decoration: InputDecoration(
+      labelText: labelText,
+      labelStyle: TextStyle(
+        color: Colors.white.withOpacity(0.9),
+        fontSize: 18,
+      ),
+      prefixIcon: Icon(
+        icon,
+        color: Colors.white.withOpacity(0.7),
+        weight: 10,
+      ),
+      filled: true,
+      fillColor: Colors.white.withOpacity(0.1),
+      enabledBorder: const UnderlineInputBorder(
+        borderRadius: BorderRadius.horizontal(
+          left: Radius.circular(10),
+          right: Radius.circular(10),
+        ),
+        borderSide: BorderSide(
+          style: BorderStyle.solid,
+          color: Color.fromARGB(255, 255, 140, 0),
+          width: 1.0,
+        ),
+      ),
+      focusedBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(
+          style: BorderStyle.solid,
+          color: Color.fromARGB(255, 255, 213, 0),
+          width: 2.0,
+        ),
+      ),
+    ),
+  );
+}
+
 String? verification(String? inputValue) {
   if (inputValue!.isEmpty) {
     return 'Empty Field';

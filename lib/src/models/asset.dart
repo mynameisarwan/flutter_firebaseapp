@@ -2,47 +2,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Asset {
   final String? assetType; //madu,botol,sticker,spanduk
-  final DateTime? transDate;
-  final num? transQty;
-  final num? transTotalPrice;
-  final String? transDescription;
   final DateTime? createdDate;
   Asset({
     required this.assetType,
-    required this.transDate,
-    required this.transQty,
-    required this.transTotalPrice,
-    required this.transDescription,
     required this.createdDate,
   });
 
   Map<String, dynamic> toJason() => {
         'AssetType': assetType,
-        'Trans.Date': transDate,
-        'Trans.Qty': transQty,
-        'Trans.TotalPrice': transTotalPrice,
-        'Trans.Description': transDescription,
       };
 
   static Asset fromJason(Map<String, dynamic> json) => Asset(
         assetType: json['AssetType'],
-        transDate: json['TransDate'] == null
-            ? null
-            : (json['TransDate'] as Timestamp).toDate(),
-        transQty: json['Trans.Qty'] == null ? null : (json['Trans.Qty'] as num),
-        transTotalPrice: json['Trans.TotalPrice'] == null
-            ? null
-            : (json['Trans.TotalPrice'] as num),
-        transDescription: json['Trans.Description'],
         createdDate: (json['CreateDate'] as Timestamp).toDate(),
       );
 
   static Asset fromDocSnap(DocumentSnapshot<Object?> json) => Asset(
         assetType: json['AssetType'],
-        transDate: (json['TransDate'] as Timestamp).toDate(),
-        transQty: (json['Trans.Qty'] as num),
-        transTotalPrice: (json['Trans.TotalPrice'] as num),
-        transDescription: json['Trans.Description'],
         createdDate: (json['CreateDate'] as Timestamp).toDate(),
       );
 
@@ -53,6 +29,21 @@ class Asset {
     var db = FirebaseFirestore.instance;
     final asset = db.collection('Assets').doc(assetType);
     await asset.set({'CreateDate': DateTime.now(), 'CreateBy': userEmail});
+  }
+
+  static Future updateAssetTransaction({
+    required Map<String, dynamic> trans,
+    required String assettype,
+  }) async {
+    List asset_ = [trans];
+    var db = FirebaseFirestore.instance;
+    final asset = db.collection('Assets').doc(assettype);
+    final upd = await asset.get();
+    if (upd.exists) {
+      await asset.update(
+        {'Transaction': FieldValue.arrayUnion(asset_)},
+      );
+    }
   }
 
   static Future<Asset?>? readAsset(String assetId) async {
@@ -104,13 +95,6 @@ class Asset {
           (ss) => ss.docs.map((doc) {
             return Asset(
               assetType: doc.reference.id,
-              transDate: doc.data()['Trans.Date'] == null
-                  ? null
-                  : (doc.data()['Trans.Date'] as Timestamp).toDate(),
-              transQty: doc.data()['Trans.Qty'],
-              transTotalPrice: doc.data()['Trans.TotalPrice'],
-              transDescription: doc.data()['Trans.Description'],
-              // createdDate: (doc.data()['CreateDate'] as Timestamp).toDate(),
               createdDate: doc.data()['CreateDate'] == null
                   ? null
                   : (doc.data()['CreateDate'] as Timestamp).toDate(),
@@ -145,4 +129,26 @@ class Asset {
       return null;
     }
   }
+}
+
+class AssetTransaction {
+  final DateTime? transDate;
+  final num? transQty;
+  final num? transPrice;
+  final num? transTotalPrice;
+  final String? transMeasurement;
+  AssetTransaction({
+    required this.transDate,
+    required this.transQty,
+    required this.transPrice,
+    required this.transTotalPrice,
+    required this.transMeasurement,
+  });
+  Map<String, dynamic> toJason() => {
+        'TransDate': transDate,
+        'TransQty': transQty,
+        'TransMeasurement': transMeasurement,
+        'TransPrice': transPrice,
+        'ransTotalPrice': transTotalPrice
+      };
 }

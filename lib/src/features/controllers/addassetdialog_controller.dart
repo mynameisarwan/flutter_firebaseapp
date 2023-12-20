@@ -82,10 +82,6 @@ class _AddAssetDialogControllerState extends State<AddAssetDialogController> {
                                 widget.addassetlist(
                                   Asset(
                                     assetType: controller.text,
-                                    transDate: null,
-                                    transQty: null,
-                                    transTotalPrice: null,
-                                    transDescription: null,
                                     createdDate: DateTime.now(),
                                   ),
                                 );
