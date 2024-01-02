@@ -3,15 +3,25 @@ import 'package:flutter_firebaseapp/src/features/controllers/navigation_controll
 import 'package:get/get.dart';
 
 class NavigationScreen extends StatelessWidget {
-  const NavigationScreen({super.key, required this.userEmail});
   final String userEmail;
+  final int scrIdx;
+  const NavigationScreen(
+      {super.key, required this.userEmail, required this.scrIdx});
+
   @override
   Widget build(BuildContext context) {
     // var screenSize = MediaQuery.of(context).size;
     final controller = Get.put(NavigationController());
     return Scaffold(
       body: Obx(
-        () => controller.screens[controller.selectedIndex.value],
+        // () => controller.screens[controller.selectedIndex.value],
+        () {
+          if (scrIdx == 0) {
+            return controller.screens[controller.selectedIndex.value];
+          } else {
+            return controller.screens[scrIdx];
+          }
+        },
       ),
       bottomNavigationBar: Obx(
         () => NavigationBar(

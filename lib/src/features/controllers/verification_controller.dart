@@ -79,6 +79,7 @@ class _VerificationControllerState extends State<VerificationController> {
                 )
               : NavigationScreen(
                   userEmail: widget.userEmail,
+                  scrIdx: 0,
                 );
         } else {
           return Scaffold(
