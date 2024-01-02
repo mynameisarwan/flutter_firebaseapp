@@ -3,6 +3,7 @@ import 'package:flutter_firebaseapp/src/common_widgets/template_button.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
 import 'package:flutter_firebaseapp/src/models/assettransaction.dart';
 import 'package:flutter_firebaseapp/src/screens/assettransactionhistory_screen.dart';
+import 'package:flutter_firebaseapp/src/screens/navigation_screen.dart';
 import 'package:intl/intl.dart';
 
 class AssetTransactionScreen extends StatefulWidget {
@@ -51,8 +52,15 @@ class _AssetTransactionScreenState extends State<AssetTransactionScreen> {
             color: Colors.white,
           ),
           onPressed: () {
-            var count = 0;
-            Navigator.of(context).popUntil((route) => count++ >= 2);
+            // var count = 0;
+            // Navigator.of(context).popUntil((route) => count++ >= 2);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    NavigationScreen(userEmail: widget.userEmail, scrIdx: 0),
+              ),
+            );
           },
         ),
         actions: [
