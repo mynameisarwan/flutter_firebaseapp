@@ -89,7 +89,8 @@ class ManAssetDialgoController extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => AssetTransactionScreen(
-                                      assetkey: controller.text),
+                                      assetkey: controller.text,
+                                      userEmail: userEmail),
                                 ),
                               );
                             },

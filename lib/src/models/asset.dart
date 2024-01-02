@@ -31,51 +31,6 @@ class Asset {
     await asset.set({'CreateDate': DateTime.now(), 'CreateBy': userEmail});
   }
 
-  static Future updateAssetTransaction({
-    required Map<String, dynamic> trans,
-    required String assettype,
-  }) async {
-    List asset_ = [trans];
-    var db = FirebaseFirestore.instance;
-    final asset = db.collection('Assets').doc(assettype);
-    final upd = await asset.get();
-    if (upd.exists) {
-      await asset.update(
-        {'Transaction': FieldValue.arrayUnion(asset_)},
-      );
-    }
-  }
-
-  static Future<Asset?>? readAsset(String assetId) async {
-    var db = FirebaseFirestore.instance;
-    final docAsset = db.collection('Assets').doc(assetId);
-
-    final sel = await docAsset.get();
-    // print('the value is $sel');
-    if (sel.exists) {
-      return Asset.fromJason(sel.data()!);
-    } else {
-      return null;
-    }
-  }
-
-  static Future<List<Asset>> readAssets() async {
-    var db = FirebaseFirestore.instance;
-    return db
-        .collection('Assets')
-        .snapshots()
-        .map(
-          (ss) => ss.docs
-              .map(
-                (doc) => Asset.fromJason(
-                  doc.data(),
-                ),
-              )
-              .toList(),
-        )
-        .first;
-  }
-
   static Future<String> deleteDocById(String docId) async {
     var db = FirebaseFirestore.instance;
     return await db.collection('Assets').doc(docId).delete().then(
@@ -88,18 +43,20 @@ class Asset {
 
   static Future<List<Asset>> readAssets_() async {
     var db = FirebaseFirestore.instance;
-    return db
+    return await db
         .collection('Assets')
         .snapshots()
         .map(
-          (ss) => ss.docs.map((doc) {
-            return Asset(
-              assetType: doc.reference.id,
-              createdDate: doc.data()['CreateDate'] == null
-                  ? null
-                  : (doc.data()['CreateDate'] as Timestamp).toDate(),
-            );
-          }).toList(),
+          (ss) => ss.docs.map(
+            (doc) {
+              return Asset(
+                assetType: doc.reference.id,
+                createdDate: doc.data()['CreateDate'] == null
+                    ? null
+                    : (doc.data()['CreateDate'] as Timestamp).toDate(),
+              );
+            },
+          ).toList(),
         )
         .first;
   }
@@ -129,26 +86,4 @@ class Asset {
       return null;
     }
   }
-}
-
-class AssetTransaction {
-  final DateTime? transDate;
-  final num? transQty;
-  final num? transPrice;
-  final num? transTotalPrice;
-  final String? transMeasurement;
-  AssetTransaction({
-    required this.transDate,
-    required this.transQty,
-    required this.transPrice,
-    required this.transTotalPrice,
-    required this.transMeasurement,
-  });
-  Map<String, dynamic> toJason() => {
-        'TransDate': transDate,
-        'TransQty': transQty,
-        'TransMeasurement': transMeasurement,
-        'TransPrice': transPrice,
-        'ransTotalPrice': transTotalPrice
-      };
 }

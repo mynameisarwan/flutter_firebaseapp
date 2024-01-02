@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_button.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
-import 'package:flutter_firebaseapp/src/models/asset.dart';
+import 'package:flutter_firebaseapp/src/models/assettransaction.dart';
+import 'package:flutter_firebaseapp/src/screens/assettransactionhistory_screen.dart';
 import 'package:intl/intl.dart';
 
 class AssetTransactionScreen extends StatefulWidget {
   final String assetkey;
+  final String userEmail;
+
   const AssetTransactionScreen({
     super.key,
     required this.assetkey,
+    required this.userEmail,
   });
 
   @override
@@ -39,6 +43,7 @@ class _AssetTransactionScreenState extends State<AssetTransactionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: Colors.black,
         leading: IconButton(
           icon: const Icon(
@@ -55,7 +60,14 @@ class _AssetTransactionScreenState extends State<AssetTransactionScreen> {
             icon: const Icon(Icons.history),
             tooltip: 'Open shopping cart',
             onPressed: () {
-              // handle the press
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AssetTransHistory(
+                    assetkey: widget.assetkey,
+                  ),
+                ),
+              ); // handle the press
             },
           ),
         ],
@@ -148,11 +160,14 @@ class _AssetTransactionScreenState extends State<AssetTransactionScreen> {
               transPrice: num.parse(hargasatuan.text),
               transTotalPrice: num.parse(hargatotal.text),
               transMeasurement: satuanpembelian.text,
-            ).toJason();
-            Asset.updateAssetTransaction(
-              trans: trans,
-              assettype: widget.assetkey,
+              assetId: widget.assetkey,
             );
+            AssetTransaction.addAssetTransaction(
+                userEmail: widget.userEmail, data: trans);
+            // Asset.updateAssetTransaction(
+            //   trans: trans,
+            //   assettype: widget.assetkey,
+            // );
           },
         ),
       ),

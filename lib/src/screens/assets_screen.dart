@@ -20,12 +20,11 @@ class _AssetsScreenState extends State<AssetsScreen> {
     final pref = await SharedPreferences.getInstance();
     if (pref.containsKey('locData')) {
       return json.decode(pref.getString('locData')!) as Map<String, dynamic>;
-      // userEmail = myData['userEmail'];
     }
   }
 
-  getAsset() async {
-    return await Asset.readAssets_();
+  getAssets() {
+    return Asset.readAssets_();
   }
 
   addassetlist(Asset asset) async {
@@ -66,7 +65,7 @@ class _AssetsScreenState extends State<AssetsScreen> {
       },
     );
 //ambil database assetnya
-    getAsset().then(
+    getAssets().then(
       (data) {
         setState(
           () {
@@ -122,7 +121,7 @@ class _AssetsScreenState extends State<AssetsScreen> {
                   ],
                 ),
               ),
-            )
+            ),
           ]
         ],
       ),

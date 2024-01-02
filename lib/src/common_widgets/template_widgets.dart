@@ -41,7 +41,7 @@ Text textFormTemplate(
     style: TextStyle(
       color: color,
       fontSize: size,
-      fontWeight: isbold ? FontWeight.bold : FontWeight.w100,
+      fontWeight: isbold ? FontWeight.bold : FontWeight.w300,
     ),
   );
 }
