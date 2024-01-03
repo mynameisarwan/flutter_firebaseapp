@@ -40,7 +40,9 @@ class _AddAssetDialogControllerState extends State<AddAssetDialogController> {
               backgroundColor: Colors.black,
               title: const Text(
                 'Asstest',
-                style: TextStyle(color: Colors.amber),
+                style: TextStyle(
+                  color: Colors.amber,
+                ),
               ),
               content: Form(
                 key: _formKey,
@@ -59,14 +61,21 @@ class _AddAssetDialogControllerState extends State<AddAssetDialogController> {
                     const SizedBox(
                       height: 12,
                     ),
-                    textFormTemplate(errMsg, true, 14, Colors.amber),
+                    textFormTemplate(
+                      errMsg,
+                      true,
+                      14,
+                      Colors.amber,
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(
                         top: 30,
                       ),
                       child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
-                          side: const BorderSide(color: Colors.amber),
+                          side: const BorderSide(
+                            color: Colors.amber,
+                          ),
                         ),
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {

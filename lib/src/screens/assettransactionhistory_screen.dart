@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
+import 'package:flutter_firebaseapp/src/features/controllers/reference_controller.dart';
 import 'package:flutter_firebaseapp/src/models/assettransaction.dart';
+import 'package:flutter_firebaseapp/src/screens/navigation_screen.dart';
 import 'package:intl/intl.dart';
 
 class AssetTransHistory extends StatefulWidget {
@@ -16,6 +18,8 @@ class AssetTransHistory extends StatefulWidget {
 
 class _AssetTransHistoryState extends State<AssetTransHistory> {
   List<AssetTransaction> assetTrans = [];
+  String? userEmail;
+
   getAssetTransaction() async {
     return await AssetTransaction.readAsssetTransaction(widget.assetkey);
   }
@@ -31,6 +35,16 @@ class _AssetTransHistoryState extends State<AssetTransHistory> {
         );
       },
     );
+
+    getReference().then(
+      (data) {
+        setState(
+          () {
+            userEmail = data['userEmail'];
+          },
+        );
+      },
+    );
     super.initState();
   }
 
@@ -42,7 +56,7 @@ class _AssetTransHistoryState extends State<AssetTransHistory> {
         backgroundColor: Colors.black,
         leading: IconButton(
           icon: const Icon(
-            Icons.arrow_back,
+            Icons.arrow_back_ios_new,
             color: Colors.white,
           ),
           onPressed: () {
@@ -56,6 +70,23 @@ class _AssetTransHistoryState extends State<AssetTransHistory> {
           'Assets ${widget.assetkey}',
           style: const TextStyle(color: Colors.amber),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.shopping_basket_outlined,
+            ),
+            tooltip: 'Open shopping cart',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      NavigationScreen(userEmail: userEmail!, scrIdx: 0),
+                ),
+              ); // handle the press
+            },
+          ),
+        ],
       ),
       body: ListView(
         children: [

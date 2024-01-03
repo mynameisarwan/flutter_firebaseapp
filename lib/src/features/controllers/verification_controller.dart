@@ -1,12 +1,10 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_firebaseapp/src/features/controllers/reference_controller.dart';
 import 'package:flutter_firebaseapp/src/models/user.dart';
 import 'package:flutter_firebaseapp/src/screens/navigation_screen.dart';
 import 'package:flutter_firebaseapp/src/screens/profile_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class VerificationController extends StatefulWidget {
   const VerificationController({super.key, required this.userEmail});
@@ -40,15 +38,6 @@ class _VerificationControllerState extends State<VerificationController> {
     );
   }
 
-//method menyimpan value kedalam local storage #nantinya mau coba dibuat method terpisah kedalam controller sendiri
-  void setReference() async {
-    final pref = await SharedPreferences.getInstance();
-
-    final myData = json.encode({'userEmail': userEmail});
-
-    pref.setString('locData', myData);
-  }
-
   Future<User?>? readUser() async {
     final docUser = db.collection('Users').doc(widget.userEmail);
 
@@ -56,7 +45,11 @@ class _VerificationControllerState extends State<VerificationController> {
     if (sel.exists) {
       // return null;
       userEmail = widget.userEmail;
-      setReference();
+      setReference(
+        {
+          'userEmail': userEmail,
+        },
+      );
       return User.fromJason(sel.data()!);
     } else {
       return null;

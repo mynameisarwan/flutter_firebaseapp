@@ -1,9 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/features/controllers/addassetdialog_controller.dart';
 import 'package:flutter_firebaseapp/src/features/controllers/mandassetdialog_controller.dart';
+import 'package:flutter_firebaseapp/src/features/controllers/reference_controller.dart';
 import 'package:flutter_firebaseapp/src/models/asset.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AssetsScreen extends StatefulWidget {
   const AssetsScreen({super.key});
@@ -16,12 +15,6 @@ class _AssetsScreenState extends State<AssetsScreen> {
   String? userEmail;
   String errMsg = '';
   List<Asset> assets = [];
-  getReference() async {
-    final pref = await SharedPreferences.getInstance();
-    if (pref.containsKey('locData')) {
-      return json.decode(pref.getString('locData')!) as Map<String, dynamic>;
-    }
-  }
 
   getAssets() {
     return Asset.readAssets_();
