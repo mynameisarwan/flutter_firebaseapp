@@ -21,7 +21,19 @@ class _AssetTransHistoryState extends State<AssetTransHistory> {
   String? userEmail;
 
   getAssetTransaction() async {
-    return await AssetTransaction.readAsssetTransaction(widget.assetkey);
+    return await AssetTransaction.readAssetTransaction(widget.assetkey);
+  }
+
+  delDataList(AssetTransaction data) async {
+    setState(
+      () {
+        assetTrans.removeWhere((x) => x.docId == data.docId);
+        assetTrans.sort(
+          (a, b) => a.transDate!.compareTo(b.transDate!),
+        );
+      },
+    );
+    await AssetTransaction.deleteDocById(data.docId!);
   }
 
   @override
@@ -96,6 +108,7 @@ class _AssetTransHistoryState extends State<AssetTransHistory> {
               child: ListTile(
                 title: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -149,9 +162,9 @@ class _AssetTransHistoryState extends State<AssetTransHistory> {
                         ),
                       ],
                     ),
-                    const Spacer(),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         textFormTemplate(
                           'Total Harga',
@@ -167,6 +180,16 @@ class _AssetTransHistoryState extends State<AssetTransHistory> {
                           14,
                           Colors.yellow,
                         ),
+                        IconButton(
+                          alignment: Alignment.bottomLeft,
+                          onPressed: () {
+                            delDataList(asset);
+                          },
+                          icon: const Icon(
+                            Icons.clear_rounded,
+                            color: Colors.red,
+                          ),
+                        )
                       ],
                     ),
                   ],

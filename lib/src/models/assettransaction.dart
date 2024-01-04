@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AssetTransaction {
+  final String? docId;
   final DateTime? transDate;
   final num transQty;
   final num transPrice;
@@ -8,6 +9,7 @@ class AssetTransaction {
   final String transMeasurement;
   final String assetId;
   AssetTransaction({
+    required this.docId,
     required this.transDate,
     required this.transQty,
     required this.transPrice,
@@ -27,6 +29,7 @@ class AssetTransaction {
 
   static AssetTransaction fromJason(Map<String, dynamic> json) =>
       AssetTransaction(
+        docId: json['DocId'],
         transDate: (json['TransDate'] as Timestamp).toDate(),
         transQty: json['TransQty'],
         transPrice: json['TransPrice'],
@@ -44,7 +47,17 @@ class AssetTransaction {
     await assetTrans.add(data.toJason());
   }
 
-  static Future<List<AssetTransaction>> readAsssetTransaction(
+  static Future<String> deleteDocById(String docId) async {
+    var db = FirebaseFirestore.instance;
+    return await db.collection('AssetTransaction').doc(docId).delete().then(
+      (value) => 'the Data has been deleted',
+      onError: (e) {
+        return 'Error : ${e.toString()}';
+      },
+    );
+  }
+
+  static Future<List<AssetTransaction>> readAssetTransaction(
       String assetId) async {
     var db = FirebaseFirestore.instance;
     return await db
@@ -54,7 +67,16 @@ class AssetTransaction {
         .map(
           (ss) => ss.docs.map(
             (doc) {
-              return AssetTransaction.fromJason(doc.data());
+              Map<String, dynamic> json = doc.data();
+              return AssetTransaction(
+                docId: doc.reference.id,
+                transDate: (json['TransDate'] as Timestamp).toDate(),
+                transQty: json['TransQty'],
+                transPrice: json['TransPrice'],
+                transTotalPrice: json['TransTotalPrice'],
+                transMeasurement: json['TransMeasurement'],
+                assetId: json['AssetId'],
+              );
             },
           ).toList(),
         )

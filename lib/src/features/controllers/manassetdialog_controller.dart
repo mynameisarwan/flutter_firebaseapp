@@ -122,10 +122,12 @@ class ManAssetDialgoController extends StatelessWidget {
                             ),
                             onPressed: () {
                               if (context.mounted) {
-                                delassetlist(Asset(
-                                  assetType: controller.text,
-                                  createdDate: DateTime.now(),
-                                ));
+                                delassetlist(
+                                  Asset(
+                                    assetType: controller.text,
+                                    createdDate: DateTime.now(),
+                                  ),
+                                );
                                 Navigator.of(context, rootNavigator: true)
                                     .pop();
                                 // Navigator.push(

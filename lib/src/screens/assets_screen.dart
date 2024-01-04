@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/features/controllers/addassetdialog_controller.dart';
-import 'package:flutter_firebaseapp/src/features/controllers/mandassetdialog_controller.dart';
+import 'package:flutter_firebaseapp/src/features/controllers/manassetdialog_controller.dart';
 import 'package:flutter_firebaseapp/src/features/controllers/reference_controller.dart';
 import 'package:flutter_firebaseapp/src/models/asset.dart';
 

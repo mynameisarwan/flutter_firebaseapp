@@ -163,6 +163,7 @@ class _AssetTransactionScreenState extends State<AssetTransactionScreen> {
           buttonText: 'Submit',
           onPressed: () async {
             final trans = AssetTransaction(
+              docId: null,
               transDate: tanggal,
               transQty: num.parse(jumlah.text),
               transPrice: num.parse(hargasatuan.text),

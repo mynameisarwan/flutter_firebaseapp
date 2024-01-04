@@ -49,11 +49,12 @@ class Asset {
         .map(
           (ss) => ss.docs.map(
             (doc) {
+              Map<String, dynamic> json = doc.data();
               return Asset(
                 assetType: doc.reference.id,
-                createdDate: doc.data()['CreateDate'] == null
+                createdDate: json['CreateDate'] == null
                     ? null
-                    : (doc.data()['CreateDate'] as Timestamp).toDate(),
+                    : (json['CreateDate'] as Timestamp).toDate(),
               );
             },
           ).toList(),
