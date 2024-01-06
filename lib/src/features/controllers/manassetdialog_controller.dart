@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
 import 'package:flutter_firebaseapp/src/models/asset.dart';
 import 'package:flutter_firebaseapp/src/screens/assettransaction_screen.dart';
-// import 'package:flutter_firebaseapp/src/screens/navigation_screen.dart';
 
 class ManAssetDialgoController extends StatelessWidget {
   final String asset;
