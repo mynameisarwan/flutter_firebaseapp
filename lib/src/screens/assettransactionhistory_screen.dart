@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebaseapp/src/common_widgets/templalte_dialogalert.dart';
+import 'package:flutter_firebaseapp/src/common_widgets/template_dialogalert.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
 import 'package:flutter_firebaseapp/src/features/controllers/reference_controller.dart';
 import 'package:flutter_firebaseapp/src/models/assettransaction.dart';

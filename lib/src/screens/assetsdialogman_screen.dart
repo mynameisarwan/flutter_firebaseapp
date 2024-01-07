@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebaseapp/src/common_widgets/template_dialogalert.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
 import 'package:flutter_firebaseapp/src/models/asset.dart';
 import 'package:flutter_firebaseapp/src/screens/assettransaction_screen.dart';
@@ -96,24 +97,40 @@ Future<void> assetsDialogManScreen(
                           },
                         ),
                       ),
+                      // onPressed: () {
+                      //   if (context.mounted) {
+                      //     delassetlist(
+                      //       Asset(
+                      //         assetType: controller.text,
+                      //         createdDate: DateTime.now(),
+                      //       ),
+                      //     );
+                      //     Navigator.of(context, rootNavigator: true).pop();
+                      //   }
+                      // },
                       onPressed: () {
-                        if (context.mounted) {
-                          delassetlist(
-                            Asset(
-                              assetType: controller.text,
-                              createdDate: DateTime.now(),
-                            ),
-                          );
-                          Navigator.of(context, rootNavigator: true).pop();
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => NavigationScreen(
-                          //       userEmail: userEmail,
-                          //     ),
-                          //   ),
-                          // );
-                        }
+                        dialogConfBuilder(
+                          context,
+                          () {
+                            delassetlist(
+                              Asset(
+                                assetType: controller.text,
+                                createdDate: DateTime.now(),
+                              ),
+                            );
+                            // Navigator.of(context, rootNavigator: true).pop();
+                            var count = 0;
+                            Navigator.of(context)
+                                .popUntil((route) => count++ >= 2);
+                          },
+                        );
+                        // delassetlist(
+                        //   Asset(
+                        //     assetType: controller.text,
+                        //     createdDate: DateTime.now(),
+                        //   ),
+                        // );
+                        // Navigator.of(context, rootNavigator: true).pop();
                       },
                       child: const Icon(
                         Icons.delete_outline,

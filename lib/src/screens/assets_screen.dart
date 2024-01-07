@@ -130,10 +130,6 @@ class _AssetsScreenState extends State<AssetsScreen> {
           ]
         ],
       ),
-      // floatingActionButton: AddAssetDialogController(
-      //   userEmail: userEmail,
-      //   addassetlist: addassetlist,
-      // ),
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
         backgroundColor: Colors.black,
