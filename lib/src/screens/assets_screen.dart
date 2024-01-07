@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_firebaseapp/src/features/controllers/addassetdialog_controller.dart';
-// import 'package:flutter_firebaseapp/src/features/controllers/manassetdialog_controller.dart';
 import 'package:flutter_firebaseapp/src/features/controllers/reference_controller.dart';
 import 'package:flutter_firebaseapp/src/models/asset.dart';
 import 'package:flutter_firebaseapp/src/screens/assetsdialogadd_screen.dart';
@@ -110,11 +108,6 @@ class _AssetsScreenState extends State<AssetsScreen> {
                       ),
                     ),
                     const Spacer(),
-                    // ManAssetDialgoController(
-                    //   asset: asset.assetType!,
-                    //   userEmail: userEmail!,
-                    //   delassetlist: delassetlist,
-                    // ),
                     IconButton(
                       onPressed: () {
                         assetsDialogManScreen(
