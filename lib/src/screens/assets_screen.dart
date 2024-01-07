@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebaseapp/src/features/controllers/addassetdialog_controller.dart';
-import 'package:flutter_firebaseapp/src/features/controllers/manassetdialog_controller.dart';
+// import 'package:flutter_firebaseapp/src/features/controllers/addassetdialog_controller.dart';
+// import 'package:flutter_firebaseapp/src/features/controllers/manassetdialog_controller.dart';
 import 'package:flutter_firebaseapp/src/features/controllers/reference_controller.dart';
 import 'package:flutter_firebaseapp/src/models/asset.dart';
+import 'package:flutter_firebaseapp/src/screens/assetsdialogadd_screen.dart';
+import 'package:flutter_firebaseapp/src/screens/assetsdialogman_screen.dart';
 
 class AssetsScreen extends StatefulWidget {
   const AssetsScreen({super.key});
@@ -15,6 +17,8 @@ class _AssetsScreenState extends State<AssetsScreen> {
   String? userEmail;
   String errMsg = '';
   List<Asset> assets = [];
+
+  TextEditingController controller = TextEditingController();
 
   getAssets() {
     return Asset.readAssets_();
@@ -106,10 +110,25 @@ class _AssetsScreenState extends State<AssetsScreen> {
                       ),
                     ),
                     const Spacer(),
-                    ManAssetDialgoController(
-                      asset: asset.assetType!,
-                      userEmail: userEmail!,
-                      delassetlist: delassetlist,
+                    // ManAssetDialgoController(
+                    //   asset: asset.assetType!,
+                    //   userEmail: userEmail!,
+                    //   delassetlist: delassetlist,
+                    // ),
+                    IconButton(
+                      onPressed: () {
+                        assetsDialogManScreen(
+                          context,
+                          controller =
+                              TextEditingController(text: asset.assetType),
+                          userEmail!,
+                          delassetlist,
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.menu_outlined,
+                        color: Colors.amber,
+                      ),
                     ),
                   ],
                 ),
@@ -118,9 +137,23 @@ class _AssetsScreenState extends State<AssetsScreen> {
           ]
         ],
       ),
-      floatingActionButton: AddAssetDialogController(
-        userEmail: userEmail,
-        addassetlist: addassetlist,
+      // floatingActionButton: AddAssetDialogController(
+      //   userEmail: userEmail,
+      //   addassetlist: addassetlist,
+      // ),
+      floatingActionButton: FloatingActionButton(
+        shape: const CircleBorder(),
+        backgroundColor: Colors.black,
+        child: const Icon(
+          Icons.add,
+          color: Colors.amber,
+        ),
+        onPressed: () {
+          assetsDialogAddScreen(
+            context,
+            addassetlist,
+          );
+        },
       ),
     );
   }

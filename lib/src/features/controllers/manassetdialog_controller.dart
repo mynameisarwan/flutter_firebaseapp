@@ -34,7 +34,7 @@ class ManAssetDialgoController extends StatelessWidget {
                 contentPadding: const EdgeInsets.all(10),
                 backgroundColor: Colors.black,
                 title: const Text(
-                  'Asstest',
+                  'Asset',
                   style: TextStyle(color: Colors.amber),
                 ),
                 content: Form(
