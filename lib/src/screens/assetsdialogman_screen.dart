@@ -97,17 +97,6 @@ Future<void> assetsDialogManScreen(
                           },
                         ),
                       ),
-                      // onPressed: () {
-                      //   if (context.mounted) {
-                      //     delassetlist(
-                      //       Asset(
-                      //         assetType: controller.text,
-                      //         createdDate: DateTime.now(),
-                      //       ),
-                      //     );
-                      //     Navigator.of(context, rootNavigator: true).pop();
-                      //   }
-                      // },
                       onPressed: () {
                         dialogConfBuilder(
                           context,
