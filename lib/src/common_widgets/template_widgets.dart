@@ -55,6 +55,19 @@ Image logoWidget(String path) {
   );
 }
 
+Image profileImage(
+  String path,
+  double width,
+  double height,
+) {
+  return Image.asset(
+    path,
+    fit: BoxFit.fitWidth,
+    width: width,
+    height: height,
+  );
+}
+
 TextFormField textFieldTemplForm(
   TextEditingController controller,
   String labelText,

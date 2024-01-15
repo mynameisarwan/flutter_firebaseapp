@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
-import 'package:flutter_firebaseapp/src/screens/profile_screen.dart';
+import 'package:flutter_firebaseapp/src/screens/myaccount_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -116,7 +116,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ProfileScreen(
+                                builder: (context) => MyAccountScreen(
                                   userEmail: _emailTextController.text,
                                 ),
                               ),

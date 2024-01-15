@@ -85,7 +85,7 @@ class User {
     await userProfile.set(user.toJason());
   }
 
-  static Future<User?>? readUser(String userEmail) async {
+  static Future<User?> readUser(String userEmail) async {
     var db = FirebaseFirestore.instance;
     final docUser = db.collection('Users').doc(userEmail);
 

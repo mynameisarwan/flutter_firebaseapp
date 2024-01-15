@@ -79,10 +79,11 @@ class _AssetsScreenState extends State<AssetsScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
+        elevation: 5,
         automaticallyImplyLeading: false,
-        title: Text(
-          'Assets $userEmail',
-          style: const TextStyle(color: Colors.amber),
+        title: const Text(
+          'Assets List',
+          style: TextStyle(color: Colors.amber),
         ),
       ),
       body: ListView(
@@ -90,6 +91,8 @@ class _AssetsScreenState extends State<AssetsScreen> {
           for (var asset in assets) ...[
             Card(
               color: Colors.black,
+              elevation: 5,
+              shadowColor: Colors.black,
               child: ListTile(
                 leading: const CircleAvatar(
                   backgroundColor: Colors.amber,

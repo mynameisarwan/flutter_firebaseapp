@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/features/controllers/reference_controller.dart';
 import 'package:flutter_firebaseapp/src/models/user.dart';
 import 'package:flutter_firebaseapp/src/screens/navigation_screen.dart';
-import 'package:flutter_firebaseapp/src/screens/profile_screen.dart';
+import 'package:flutter_firebaseapp/src/screens/myaccount_screen.dart';
 
 class VerificationController extends StatefulWidget {
   const VerificationController({super.key, required this.userEmail});
@@ -67,7 +67,7 @@ class _VerificationControllerState extends State<VerificationController> {
           final user = snapshot.data!;
           String status = user.profileStatus;
           return status == 'Candidate'
-              ? ProfileScreen(
+              ? MyAccountScreen(
                   userEmail: widget.userEmail,
                 )
               : NavigationScreen(
@@ -128,7 +128,7 @@ class _VerificationControllerState extends State<VerificationController> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (BuildContext context) =>
-                                          ProfileScreen(
+                                          MyAccountScreen(
                                         userEmail: widget.userEmail,
                                       ),
                                     ),

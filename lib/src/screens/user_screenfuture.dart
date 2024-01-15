@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_button.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_displaybottomsheet.dart';
@@ -17,24 +16,12 @@ class UserScreenFuture extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    var db = FirebaseFirestore.instance;
+
     final TextEditingController userStatusTextController =
         TextEditingController();
 
-    Future<User?>? readUser() async {
-      final docUser = db.collection('Users').doc(userEmail);
-
-      final sel = await docUser.get();
-      if (sel.exists) {
-        // return null;
-        return User.fromJason(sel.data()!);
-      } else {
-        return null;
-      }
-    }
-
     return FutureBuilder<User?>(
-      future: readUser(),
+      future: User.readUser(userEmail),
       builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
         if (snapshot.hasError) {
           return Text('Error : ${snapshot.error.toString()}');

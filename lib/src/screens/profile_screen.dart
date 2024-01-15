@@ -1,333 +1,279 @@
-import 'package:firebase_auth/firebase_auth.dart' as eos;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebaseapp/src/common_widgets/template_button.dart';
-import 'package:flutter_firebaseapp/src/common_widgets/template_radionbutton.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
-import 'package:flutter_firebaseapp/src/enums/enum_datalookup.dart';
-import 'package:flutter_firebaseapp/src/models/user.dart';
+import 'package:flutter_firebaseapp/src/features/controllers/reference_controller.dart';
 import 'package:flutter_firebaseapp/src/screens/signin_screen.dart';
+import '../models/user.dart' as model;
 
-class ProfileScreen extends StatefulWidget {
-  final String userEmail;
-  const ProfileScreen({super.key, required this.userEmail});
+String userEmail = "";
+String userName = "";
+AsyncSnapshot<model.User?>? dataUser;
 
-  @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
-}
+var db = FirebaseFirestore.instance;
 
-class _ProfileScreenState extends State<ProfileScreen> {
-  late TextEditingController _userNameTextController = TextEditingController();
-  late TextEditingController _phoneNumbTextController = TextEditingController();
-  late TextEditingController _addressTextController = TextEditingController();
-  UserGenderEnum? _gender;
-  @override
-  void dispose() {
-    _userNameTextController.dispose();
-    _phoneNumbTextController.dispose();
-    _addressTextController.dispose();
-    super.dispose();
+class UserProfile extends StatelessWidget {
+  const UserProfile({super.key});
+
+  Future<model.User?> getData() async {
+    await getReference().then(
+      (data) {
+        userEmail = data['userEmail'];
+        // udata.
+      },
+    );
+    return await model.User.readUser(userEmail).then(
+      (value) => value,
+    );
+    // return null;
   }
 
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    return FutureBuilder(
-      future: User.readUser(widget.userEmail),
-      builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-        if (snapshot.hasError) {
-          return Text('Error : ${snapshot.error.toString()}');
-        } else if (snapshot.hasData) {
-          final user = snapshot.data!;
-          _userNameTextController = TextEditingController(
-            text: user.profileName,
-          );
-          _phoneNumbTextController = TextEditingController(
-            text: user.phoneNumber,
-          );
-          _addressTextController = TextEditingController(
-            text: user.profileAddress,
-          );
-          return Scaffold(
+
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(255, 255, 94, 94),
+                Color.fromARGB(255, 239, 126, 46),
+                Color.fromARGB(255, 237, 196, 18),
+              ],
+              begin: FractionalOffset.topCenter,
+              end: FractionalOffset.bottomCenter,
+            ),
+          ),
+        ),
+        SafeArea(
+          child: Scaffold(
             extendBodyBehindAppBar: true,
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              backgroundColor: Colors.transparent,
-              toolbarHeight: 100,
-              actions: [
-                Ink(
-                  width: 40,
-                  height: 40,
-                  decoration: const ShapeDecoration(
-                    shape: CircleBorder(),
-                    color: Colors.white12,
-                  ),
-                  child: Center(
-                    child: IconButton(
-                      color: Colors.white,
-                      onPressed: () {
-                        eos.FirebaseAuth.instance.signOut().then(
-                          (value) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const SignInScreen(),
-                              ),
+            backgroundColor: Colors.transparent,
+            body: SingleChildScrollView(
+              controller: ScrollController(),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                  vertical: 20,
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            FirebaseAuth.instance.signOut().then(
+                              (value) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const SignInScreen(),
+                                  ),
+                                );
+                              },
                             );
                           },
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.logout_outlined,
+                          child: const Icon(
+                            Icons.logout_rounded,
+                            color: Colors.white,
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Text(
+                      'My Profile',
+                      style: TextStyle(
                         color: Colors.white,
+                        fontSize: 30,
                       ),
                     ),
-                  ),
-                ),
-                SizedBox(
-                  width: screenSize.width / 20,
-                )
-              ],
-            ),
-            body: Container(
-              width: screenSize.width,
-              height: screenSize.height,
-              padding: const EdgeInsets.only(
-                top: 45,
-                bottom: 20,
-                left: 20,
-                right: 20,
-              ),
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Color.fromARGB(255, 255, 94, 94),
-                    Color.fromARGB(255, 239, 126, 46),
-                    Color.fromARGB(255, 237, 196, 18),
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-              ),
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(
-                    20,
-                    screenSize.height * 0.2,
-                    20,
-                    0,
-                  ),
-                  child: Column(
-                    children: [
-                      textFieldTemplForm(
-                        // user.profileName.isEmpty
-                        //     ? _userNameTextController
-                        //     : _userNameTextController = TextEditingController(
-                        //         text: user.profileName,
-                        //       ),
-                        _userNameTextController,
-                        'Profile Name',
-                        Icons.person_2_outlined,
-                        TextInputType.name,
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        children: [
-                          RadioButtonTempl(
-                            title: UserGenderEnum.male.name,
-                            value: UserGenderEnum.male,
-                            userGenderEnum: _gender ??
-                                (user.profileGender == 'Male'
-                                    ? UserGenderEnum.male
-                                    : _gender),
-                            onChanged: (val) {
-                              setState(() {
-                                _gender = val;
-                              });
-                            },
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          RadioButtonTempl(
-                            title: UserGenderEnum.female.name,
-                            value: UserGenderEnum.female,
-                            userGenderEnum: _gender ??
-                                (user.profileGender == 'Female'
-                                    ? UserGenderEnum.female
-                                    : _gender),
-                            onChanged: (val) {
-                              setState(() {
-                                _gender = val;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      textFieldTemplForm(
-                        // user.phoneNumber.isEmpty
-                        //     ? _phoneNumbTextController
-                        //     : _phoneNumbTextController = TextEditingController(
-                        //         text: user.phoneNumber,
-                        //       ),
-                        _phoneNumbTextController,
-                        'Phone Number',
-                        Icons.phone_android_outlined,
-                        TextInputType.phone,
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      textFieldTemplForm(
-                        // user.profileAddress.isEmpty
-                        //     ? _addressTextController
-                        //     : _addressTextController = TextEditingController(
-                        //         text: user.profileAddress,
-                        //       ),
-                        _addressTextController,
-                        'User Address',
-                        Icons.house_outlined,
-                        TextInputType.streetAddress,
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      ButtonTemplate(
-                        buttonText: 'Submit Form',
-                        onPressed: () {
-                          // try{} catch
-                          User.addUser(
-                            profileName: _userNameTextController.text,
-                            profileEmail: widget.userEmail,
-                            profileAddress: _addressTextController.text,
-                            phoneNumber: _phoneNumbTextController.text,
-                            profileGender: _gender.toString(),
-                          );
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      height: screenSize.height * 0.4,
+                      color: Colors.transparent,
+                      child: FutureBuilder(
+                        future: getData(),
+                        builder: (
+                          BuildContext context,
+                          AsyncSnapshot<model.User?> snapshot,
+                        ) {
+                          if (snapshot.hasData) {
+                            final user = snapshot.data!;
+                            return LayoutBuilder(
+                              builder: (context, constraints) {
+                                double innerheight = constraints.maxHeight;
+                                double innerWidth = constraints.maxWidth;
+                                return Stack(
+                                  fit: StackFit.expand,
+                                  children: [
+                                    Positioned(
+                                      bottom: 0,
+                                      left: 0,
+                                      right: 0,
+                                      child: Container(
+                                        height: innerheight * 0.65,
+                                        width: innerWidth,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                          color: Colors.white,
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: innerheight * 0.2,
+                                            ),
+                                            Text(
+                                              user.profileName,
+                                              style: const TextStyle(
+                                                fontSize: 24,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: innerWidth * 0.01,
+                                            ),
+                                            Text(
+                                              user.profileStatus,
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.black38,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      top: 0,
+                                      left: 0,
+                                      right: 0,
+                                      child: Center(
+                                        child: user.profileGender == 'Male'
+                                            ? profileImage(
+                                                'assets/images/pimg_m.png',
+                                                innerWidth * 0.45,
+                                                innerWidth * 0.45)
+                                            : profileImage(
+                                                'assets/images/pimg_f.png',
+                                                innerWidth * 0.45,
+                                                innerWidth * 0.45),
+                                      ),
+                                    )
+                                  ],
+                                );
+                              },
+                            );
+                          } else if (snapshot.hasError) {
+                            return LayoutBuilder(
+                              builder: (context, constraints) {
+                                double innerheight = constraints.maxHeight;
+                                double innerWidth = constraints.maxWidth;
+                                return Stack(
+                                  fit: StackFit.expand,
+                                  children: [
+                                    Positioned(
+                                      bottom: 0,
+                                      left: 0,
+                                      right: 0,
+                                      child: Container(
+                                        height: innerheight * 0.65,
+                                        width: innerWidth,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                          color: Colors.white,
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: innerheight * 0.2,
+                                            ),
+                                            Text(
+                                              "Error: ${snapshot.error}",
+                                              style:
+                                                  const TextStyle(fontSize: 24),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      top: 0,
+                                      left: 0,
+                                      right: 0,
+                                      child: Center(
+                                        child: profileImage(
+                                            'assets/images/pimg_m.png',
+                                            innerWidth * 0.45,
+                                            innerWidth * 0.45),
+                                      ),
+                                    )
+                                  ],
+                                );
+                              },
+                            );
+                          } else {
+                            return LayoutBuilder(
+                              builder: (context, constraints) {
+                                double innerheight = constraints.maxHeight;
+                                double innerWidth = constraints.maxWidth;
+                                return Stack(
+                                  fit: StackFit.expand,
+                                  children: [
+                                    Positioned(
+                                      bottom: 0,
+                                      left: 0,
+                                      right: 0,
+                                      child: Container(
+                                        height: innerheight * 0.65,
+                                        width: innerWidth,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                          color: Colors.white,
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: innerheight * 0.2,
+                                            ),
+                                            const CircularProgressIndicator(),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    const Positioned(
+                                      top: 0,
+                                      left: 0,
+                                      right: 0,
+                                      child: Center(
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    )
+                                  ],
+                                );
+                              },
+                            );
+                          }
                         },
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        } else {
-          // return const Center(child: CircularProgressIndicator());
-          return Scaffold(
-            body: Container(
-              width: screenSize.width,
-              height: screenSize.height,
-              padding: const EdgeInsets.only(
-                top: 45,
-                bottom: 20,
-                left: 20,
-                right: 20,
-              ),
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Color.fromARGB(255, 255, 94, 94),
-                    Color.fromARGB(255, 239, 126, 46),
-                    Color.fromARGB(255, 237, 196, 18),
+                      ),
+                    )
                   ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-              ),
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(
-                    20,
-                    screenSize.height * 0.2,
-                    20,
-                    0,
-                  ),
-                  child: Column(
-                    children: [
-                      textFieldTemplForm(
-                        _userNameTextController,
-                        "Profile Name",
-                        Icons.person_2_outlined,
-                        TextInputType.name,
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        children: [
-                          RadioButtonTempl(
-                            title: UserGenderEnum.male.name,
-                            value: UserGenderEnum.male,
-                            userGenderEnum: _gender,
-                            onChanged: (val) {
-                              // print(_gender);
-                              setState(() {
-                                _gender = val;
-                                // print(_gender);
-                              });
-                            },
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          RadioButtonTempl(
-                            title: UserGenderEnum.female.name,
-                            value: UserGenderEnum.female,
-                            userGenderEnum: _gender,
-                            onChanged: (val) {
-                              setState(() {
-                                _gender = val;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      textFieldTemplForm(
-                        _phoneNumbTextController,
-                        "Phone Number",
-                        Icons.phone_android_outlined,
-                        TextInputType.phone,
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      textFieldTemplForm(
-                        _addressTextController,
-                        "User Address",
-                        Icons.house_outlined,
-                        TextInputType.phone,
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      ButtonTemplate(
-                        buttonText: 'Submit Form',
-                        onPressed: () {
-                          // try{} catch
-                          User.addUser(
-                            profileName: _userNameTextController.text,
-                            profileEmail: widget.userEmail,
-                            profileAddress: _addressTextController.text,
-                            phoneNumber: _phoneNumbTextController.text,
-                            profileGender: _gender.toString(),
-                          );
-                        },
-                      )
-                    ],
-                  ),
                 ),
               ),
             ),
-          );
-        }
-      },
+          ),
+        )
+      ],
     );
   }
 }
