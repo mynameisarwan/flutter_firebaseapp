@@ -5,6 +5,7 @@ import 'package:flutter_firebaseapp/src/features/controllers/reference_controlle
 import 'package:flutter_firebaseapp/src/models/user.dart';
 import 'package:flutter_firebaseapp/src/screens/navigation_screen.dart';
 import 'package:flutter_firebaseapp/src/screens/myaccount_screen.dart';
+import 'package:flutter_firebaseapp/src/screens/ordertransaction_screen.dart';
 
 class VerificationController extends StatefulWidget {
   const VerificationController({super.key, required this.userEmail});
@@ -44,10 +45,12 @@ class _VerificationControllerState extends State<VerificationController> {
     final sel = await docUser.get();
     if (sel.exists) {
       // return null;
+      User data = User.fromJason(sel.data()!);
       userEmail = widget.userEmail;
       setReference(
         {
-          'userEmail': userEmail,
+          'userEmail': data.profileEmail,
+          'userName': data.profileName,
         },
       );
       return User.fromJason(sel.data()!);
@@ -70,10 +73,14 @@ class _VerificationControllerState extends State<VerificationController> {
               ? MyAccountScreen(
                   userEmail: widget.userEmail,
                 )
-              : NavigationScreen(
-                  userEmail: widget.userEmail,
-                  scrIdx: 0,
-                );
+              : status == 'Administrator'
+                  ? NavigationScreen(
+                      userEmail: widget.userEmail,
+                      scrIdx: 0,
+                    )
+                  : OrderTransaction(
+                      userEmail: widget.userEmail,
+                    );
         } else {
           return Scaffold(
             body: Container(

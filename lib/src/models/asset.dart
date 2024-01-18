@@ -3,23 +3,39 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Asset {
   final String? assetType; //madu,botol,sticker,spanduk
   final DateTime? createdDate;
+  final num? sellingPrice;
+  final String? sellingUnit;
   Asset({
-    required this.assetType,
-    required this.createdDate,
+    this.assetType,
+    this.createdDate,
+    this.sellingPrice,
+    this.sellingUnit,
   });
 
   Map<String, dynamic> toJason() => {
         'AssetType': assetType,
+        'CreatedDate': createdDate,
+        'SellingPrice': sellingPrice,
+        'SellingUnit': sellingUnit,
       };
 
   static Asset fromJason(Map<String, dynamic> json) => Asset(
         assetType: json['AssetType'],
-        createdDate: (json['CreateDate'] as Timestamp).toDate(),
+        sellingPrice: json['SellingPrice'] ?? 0,
+        sellingUnit: json['SellingUnit'],
+        createdDate: (json['CreatedDate'] as Timestamp).toDate(),
+      );
+
+  static Asset fromDS(QueryDocumentSnapshot<Map<String, dynamic>> ds) => Asset(
+        assetType: ds.reference.id,
+        sellingPrice: ds.data()['SellingPrice'] ?? 0,
+        sellingUnit: ds.data()['SellingUnit'],
+        createdDate: (ds.data()['CreatedDate'] as Timestamp).toDate(),
       );
 
   static Asset fromDocSnap(DocumentSnapshot<Object?> json) => Asset(
         assetType: json['AssetType'],
-        createdDate: (json['CreateDate'] as Timestamp).toDate(),
+        createdDate: (json['CreatedDate'] as Timestamp).toDate(),
       );
 
   static Future addAssetCollection({
@@ -28,7 +44,10 @@ class Asset {
   }) async {
     var db = FirebaseFirestore.instance;
     final asset = db.collection('Assets').doc(assetType);
-    await asset.set({'CreateDate': DateTime.now(), 'CreateBy': userEmail});
+    await asset.set({
+      'CreatedDate': DateTime.now(),
+      'CreateBy': userEmail,
+    });
   }
 
   static Future<String> deleteDocById(String docId) async {
@@ -41,6 +60,14 @@ class Asset {
     );
   }
 
+  static Future updateAsset(Asset assetmdl) async {
+    var db = FirebaseFirestore.instance;
+    final userProfile = db.collection('Assets').doc(assetmdl.assetType);
+    userProfile.update(
+      assetmdl.toJason(),
+    );
+  }
+
   static Future<List<Asset>> readAssets_() async {
     var db = FirebaseFirestore.instance;
     return await db
@@ -49,13 +76,37 @@ class Asset {
         .map(
           (ss) => ss.docs.map(
             (doc) {
-              Map<String, dynamic> json = doc.data();
-              return Asset(
-                assetType: doc.reference.id,
-                createdDate: json['CreateDate'] == null
-                    ? null
-                    : (json['CreateDate'] as Timestamp).toDate(),
+              return Asset.fromDS(
+                doc,
               );
+            },
+          ).toList(),
+        )
+        .first;
+  }
+
+  static Future<Asset> getAssetbyType(String assetType) async {
+    var db = FirebaseFirestore.instance;
+    return await db.collection('Assets').doc(assetType).get().then(
+          (value) => Asset.fromJason(value.data()!),
+        );
+  }
+
+  static Future<List<Asset>> getAssetsNamed(List<String> type) async {
+    var db = FirebaseFirestore.instance;
+    return await db
+        .collection('Assets')
+        .where('__name__', whereIn: type)
+        .snapshots()
+        .map(
+          (ss) => ss.docs.map(
+            (doc) {
+              // Map<String, dynamic> json = doc.data();
+              return Asset.fromDS(doc);
+              // return Asset(
+              //   assetType: doc.reference.id,
+              //   sellingPrice: json['SellingPrice'],
+              // );
             },
           ).toList(),
         )

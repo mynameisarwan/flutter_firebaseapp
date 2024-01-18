@@ -123,6 +123,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                         'Profile Name',
                         Icons.person_2_outlined,
                         TextInputType.name,
+                        true,
                       ),
                       const SizedBox(
                         height: 5,
@@ -168,6 +169,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                         'Phone Number',
                         Icons.phone_android_outlined,
                         TextInputType.phone,
+                        true,
                       ),
                       const SizedBox(
                         height: 5,
@@ -177,6 +179,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                         'User Address',
                         Icons.house_outlined,
                         TextInputType.streetAddress,
+                        true,
                       ),
                       const SizedBox(
                         height: 5,
@@ -238,6 +241,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                         "Profile Name",
                         Icons.person_2_outlined,
                         TextInputType.name,
+                        true,
                       ),
                       const SizedBox(
                         height: 5,
@@ -279,6 +283,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                         "Phone Number",
                         Icons.phone_android_outlined,
                         TextInputType.phone,
+                        true,
                       ),
                       const SizedBox(
                         height: 5,
@@ -288,6 +293,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                         "User Address",
                         Icons.house_outlined,
                         TextInputType.phone,
+                        true,
                       ),
                       const SizedBox(
                         height: 5,

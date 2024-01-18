@@ -43,6 +43,7 @@ class _AssetTransactionScreenState extends State<AssetTransactionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.black,
@@ -126,6 +127,7 @@ class _AssetTransactionScreenState extends State<AssetTransactionScreen> {
               'Jumlah Pembelian',
               Icons.shopify_outlined,
               TextInputType.number,
+              true,
             ),
             const SizedBox(
               height: 20,
@@ -135,6 +137,7 @@ class _AssetTransactionScreenState extends State<AssetTransactionScreen> {
               'Satuan Pembelian',
               Icons.design_services_outlined,
               TextInputType.text,
+              true,
             ),
             const SizedBox(
               height: 20,
@@ -144,6 +147,7 @@ class _AssetTransactionScreenState extends State<AssetTransactionScreen> {
               'Harga Satuan',
               Icons.price_change,
               TextInputType.number,
+              true,
             ),
             const SizedBox(
               height: 20,
@@ -153,33 +157,35 @@ class _AssetTransactionScreenState extends State<AssetTransactionScreen> {
               'Harga Total',
               Icons.monetization_on_outlined,
               TextInputType.number,
+              true,
+            ),
+            const Spacer(),
+            ButtonTemplate(
+              buttonText: 'Submit',
+              onPressed: () async {
+                final trans = AssetTransaction(
+                  docId: null,
+                  transDate: tanggal,
+                  transQty: num.parse(jumlah.text),
+                  transPrice: num.parse(hargasatuan.text),
+                  transTotalPrice: num.parse(hargatotal.text),
+                  transMeasurement: satuanpembelian.text,
+                  assetId: widget.assetkey,
+                );
+                AssetTransaction.addAssetTransaction(
+                    userEmail: widget.userEmail, data: trans);
+                // Asset.updateAssetTransaction(
+                //   trans: trans,
+                //   assettype: widget.assetkey,
+                // );
+              },
             ),
           ],
         ),
       ),
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(color: Colors.black),
-        child: ButtonTemplate(
-          buttonText: 'Submit',
-          onPressed: () async {
-            final trans = AssetTransaction(
-              docId: null,
-              transDate: tanggal,
-              transQty: num.parse(jumlah.text),
-              transPrice: num.parse(hargasatuan.text),
-              transTotalPrice: num.parse(hargatotal.text),
-              transMeasurement: satuanpembelian.text,
-              assetId: widget.assetkey,
-            );
-            AssetTransaction.addAssetTransaction(
-                userEmail: widget.userEmail, data: trans);
-            // Asset.updateAssetTransaction(
-            //   trans: trans,
-            //   assettype: widget.assetkey,
-            // );
-          },
-        ),
-      ),
+      // bottomNavigationBar: Container(
+      //   decoration: const BoxDecoration(color: Colors.black),
+      //   child: ),
     );
   }
 }

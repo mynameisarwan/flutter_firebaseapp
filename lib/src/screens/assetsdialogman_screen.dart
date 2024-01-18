@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_dialogalert.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
 import 'package:flutter_firebaseapp/src/models/asset.dart';
+import 'package:flutter_firebaseapp/src/screens/asset_screen.dart';
 import 'package:flutter_firebaseapp/src/screens/assettransaction_screen.dart';
 
 final formKey = GlobalKey<FormState>();
@@ -29,13 +30,23 @@ Future<void> assetsDialogManScreen(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                textFieldTemplFormWithNotif(
+                textFieldTemplFormWithNotifTap(
                   controller,
                   'Input Assets',
                   Icons.data_saver_off,
-                  TextInputType.text,
+                  TextInputType.none,
                   verification,
                   true,
+                  () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => AssetScreen(
+                          assetKey: controller.text,
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(
                   height: 20,

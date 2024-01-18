@@ -21,23 +21,10 @@ class UserScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     var db = FirebaseFirestore.instance;
-    final TextEditingController userStatusTextController =
-        TextEditingController();
+    // TextEditingController userStatusTextController;
 
     Stream<DocumentSnapshot<Map<String, dynamic>>> readUser() =>
         db.collection('Users').doc(userEmail).snapshots();
-
-    // Future<User?>? readUser() async {
-    //   final docUser = db.collection('Users').doc(userEmail);
-
-    //   final sel = await docUser.get();
-    //   if (sel.exists) {
-    //     // return null;
-    //     return User.fromJason(sel.data()!);
-    //   } else {
-    //     return null;
-    //   }
-    // }
 
     return StreamBuilder(
       stream: readUser(),
@@ -315,7 +302,7 @@ class UserScreen extends StatelessWidget {
                           // try{} catch
                           User.updateUserStatus(
                             profileEmail: user.profileEmail,
-                            profileStatus: userStatusTextController.text,
+                            profileStatus: user.profileStatus,
                           );
                         },
                       ),

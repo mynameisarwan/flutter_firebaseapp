@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
 import 'package:flutter_firebaseapp/src/features/controllers/reference_controller.dart';
 import 'package:flutter_firebaseapp/src/models/asset.dart';
 import 'package:flutter_firebaseapp/src/screens/assetsdialogadd_screen.dart';
 import 'package:flutter_firebaseapp/src/screens/assetsdialogman_screen.dart';
+import 'package:intl/intl.dart';
 
 class AssetsScreen extends StatefulWidget {
   const AssetsScreen({super.key});
@@ -83,7 +85,9 @@ class _AssetsScreenState extends State<AssetsScreen> {
         automaticallyImplyLeading: false,
         title: const Text(
           'Assets List',
-          style: TextStyle(color: Colors.amber),
+          style: TextStyle(
+            color: Colors.amber,
+          ),
         ),
       ),
       body: ListView(
@@ -103,12 +107,26 @@ class _AssetsScreenState extends State<AssetsScreen> {
                 ),
                 title: Row(
                   children: [
-                    Text(
-                      asset.assetType!,
-                      style: const TextStyle(
-                        color: Colors.amber,
-                        fontSize: 16,
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        textFormTemplate(
+                          asset.assetType!,
+                          true,
+                          16,
+                          Colors.amber,
+                        ),
+                        // const SizedBox(
+                        //   height: 5,
+                        // ),
+                        textFormTemplate(
+                          'harga jual : ${NumberFormat.simpleCurrency(locale: 'id_ID').format(asset.sellingPrice!.toInt())}',
+                          false,
+                          14,
+                          Colors.white54,
+                        ),
+                      ],
                     ),
                     const Spacer(),
                     IconButton(

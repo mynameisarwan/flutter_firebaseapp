@@ -73,9 +73,11 @@ TextFormField textFieldTemplForm(
   String labelText,
   IconData icon,
   TextInputType inputType,
+  bool enabled,
 ) {
   return TextFormField(
     controller: controller,
+    enabled: enabled,
     style: TextStyle(
       color: Colors.white.withOpacity(0.9),
     ),
@@ -102,6 +104,64 @@ TextFormField textFieldTemplForm(
           style: BorderStyle.solid,
           color: Color.fromARGB(255, 255, 140, 0),
           width: 1.0,
+        ),
+      ),
+      focusedBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(
+          style: BorderStyle.solid,
+          color: Color.fromARGB(255, 255, 213, 0),
+          width: 2.0,
+        ),
+      ),
+    ),
+  );
+}
+
+TextFormField textFieldTemplFormTap(
+  TextEditingController controller,
+  String labelText,
+  IconData icon,
+  TextInputType inputType,
+  bool enabled,
+  void Function()? onTap,
+) {
+  return TextFormField(
+    controller: controller,
+    enabled: enabled,
+    onTap: onTap,
+    style: TextStyle(
+      color: Colors.white.withOpacity(0.9),
+    ),
+    keyboardType: inputType,
+    decoration: InputDecoration(
+      labelText: labelText,
+      labelStyle: TextStyle(
+        color: Colors.white.withOpacity(0.9),
+        fontSize: 18,
+      ),
+      prefixIcon: Icon(
+        icon,
+        color: Colors.white.withOpacity(0.7),
+        weight: 10,
+      ),
+      filled: true,
+      fillColor: Colors.white.withOpacity(0.1),
+      enabledBorder: const UnderlineInputBorder(
+        borderRadius: BorderRadius.horizontal(
+          left: Radius.circular(10),
+          right: Radius.circular(10),
+        ),
+        borderSide: BorderSide(
+          style: BorderStyle.solid,
+          color: Color.fromARGB(255, 255, 140, 0),
+          width: 1.0,
+        ),
+      ),
+      disabledBorder: UnderlineInputBorder(
+        borderSide: BorderSide(
+          style: BorderStyle.solid,
+          color: Colors.amber[900]!,
+          width: 2.0,
         ),
       ),
       focusedBorder: const UnderlineInputBorder(
@@ -184,6 +244,59 @@ TextFormField textFieldTemplFormWithNotif(
     readOnly: readOnly,
     validator: validator,
     controller: controller,
+    style: TextStyle(
+      color: Colors.white.withOpacity(0.9),
+    ),
+    keyboardType: inputType,
+    decoration: InputDecoration(
+      labelText: labelText,
+      labelStyle: TextStyle(
+        color: Colors.white.withOpacity(0.9),
+        fontSize: 18,
+      ),
+      prefixIcon: Icon(
+        icon,
+        color: Colors.white.withOpacity(0.7),
+        weight: 10,
+      ),
+      filled: true,
+      fillColor: Colors.white.withOpacity(0.1),
+      enabledBorder: const UnderlineInputBorder(
+        borderRadius: BorderRadius.horizontal(
+          left: Radius.circular(10),
+          right: Radius.circular(10),
+        ),
+        borderSide: BorderSide(
+          style: BorderStyle.solid,
+          color: Color.fromARGB(255, 255, 140, 0),
+          width: 1.0,
+        ),
+      ),
+      focusedBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(
+          style: BorderStyle.solid,
+          color: Color.fromARGB(255, 255, 213, 0),
+          width: 2.0,
+        ),
+      ),
+    ),
+  );
+}
+
+TextFormField textFieldTemplFormWithNotifTap(
+  TextEditingController controller,
+  String labelText,
+  IconData icon,
+  TextInputType inputType,
+  String? Function(String?)? validator,
+  bool readOnly,
+  void Function()? onTap,
+) {
+  return TextFormField(
+    readOnly: readOnly,
+    validator: validator,
+    controller: controller,
+    onTap: onTap,
     style: TextStyle(
       color: Colors.white.withOpacity(0.9),
     ),
