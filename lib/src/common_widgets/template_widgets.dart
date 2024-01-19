@@ -122,12 +122,12 @@ TextFormField textFieldTemplFormTap(
   String labelText,
   IconData icon,
   TextInputType inputType,
-  bool enabled,
+  bool readonly,
   void Function()? onTap,
 ) {
   return TextFormField(
     controller: controller,
-    enabled: enabled,
+    readOnly: readonly,
     onTap: onTap,
     style: TextStyle(
       color: Colors.white.withOpacity(0.9),

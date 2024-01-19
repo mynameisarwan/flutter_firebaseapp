@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 Future<void> mbsProduct(
   BuildContext context,
   List<Asset> assets,
-  Function(String selected)? onTap,
+  Function(Asset selected)? onTap,
 ) {
   var screenSize = MediaQuery.of(context).size;
 
@@ -34,12 +34,18 @@ Future<void> mbsProduct(
               ),
               GestureDetector(
                 onTap: () {
-                  onTap!('${asset.assetType}');
+                  onTap!(
+                    Asset(
+                      assetType: asset.assetType,
+                      sellingPrice: asset.sellingPrice,
+                    ),
+                  );
                   Navigator.pop(context);
                 },
                 child: Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: screenSize.width * 0.05),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: screenSize.width * 0.05,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -50,7 +56,7 @@ Future<void> mbsProduct(
                         Colors.black,
                       ),
                       textFormTemplate(
-                        'Harga : ${NumberFormat.simpleCurrency(locale: 'id_ID').format(
+                        'Harga : ${NumberFormat.currency(locale: 'id_ID').format(
                           asset.sellingPrice!.toInt(),
                         )} / ${asset.sellingUnit}',
                         false,

@@ -78,9 +78,9 @@ class _VerificationControllerState extends State<VerificationController> {
                       userEmail: widget.userEmail,
                       scrIdx: 0,
                     )
-                  : OrderTransaction(
-                      userEmail: widget.userEmail,
-                    );
+                  : const OrderTransaction(
+                      // userEmail: widget.userEmail,
+                      );
         } else {
           return Scaffold(
             body: Container(
