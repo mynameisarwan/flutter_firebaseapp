@@ -40,12 +40,12 @@ class NavigationScreen extends StatelessWidget {
                 icon: Icon(
                   Icons.people_alt_outlined,
                 ),
-                label: 'Reseller'),
+                label: 'Members'),
             NavigationDestination(
                 icon: Icon(
                   Icons.store_outlined,
                 ),
-                label: 'Transaction'),
+                label: 'Orders'),
             NavigationDestination(
                 icon: Icon(
                   Icons.person_3_outlined,

@@ -8,6 +8,7 @@ class Order {
   final String orderBy;
   final DateTime orderDate;
   final String orderStatus;
+  String? orderId;
 
   Order({
     required this.productType,
@@ -16,6 +17,7 @@ class Order {
     required this.orderDate,
     required this.orderStatus,
     required this.orderPrice,
+    this.orderId,
   });
 
   Map<String, dynamic> toJason() => {
@@ -34,6 +36,17 @@ class Order {
         orderDate: (json['OrderDate'] as Timestamp).toDate(),
         orderStatus: json['OrderStatus'],
         orderPrice: json['OrderPrice'],
+      );
+
+  static Order fromQDS(QueryDocumentSnapshot<Map<String, dynamic>> qdsjson) =>
+      Order(
+        orderId: qdsjson.reference.id,
+        productType: qdsjson.data()['ProductType'],
+        orderQty: qdsjson.data()['OrderQty'],
+        orderBy: qdsjson.data()['OrderBy'],
+        orderDate: (qdsjson.data()['OrderDate'] as Timestamp).toDate(),
+        orderStatus: qdsjson.data()['OrderStatus'],
+        orderPrice: qdsjson.data()['OrderPrice'],
       );
 
   static Future<List<Order>> readOrdersBy() async {
@@ -57,6 +70,12 @@ class Order {
     return sel;
   }
 
+  static Future<void> updateUserStatus(String orderStatus, String docid) async {
+    var db = FirebaseFirestore.instance;
+    final docUser = db.collection('Orders').doc(docid);
+    docUser.update({'OrderStatus': orderStatus});
+  }
+
   static Future<List<Order>> readOrders() async {
     var db = FirebaseFirestore.instance;
     final docUser = db.collection('Orders');
@@ -64,8 +83,8 @@ class Order {
     final sel = await docUser.get().then(
           (value) => value.docs
               .map(
-                (e) => Order.fromJason(
-                  e.data(),
+                (e) => Order.fromQDS(
+                  e,
                 ),
               )
               .toList(),

@@ -1,49 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
 import 'package:flutter_firebaseapp/src/models/order.dart';
-import 'package:flutter_firebaseapp/src/screens/order_screen.dart';
-import 'package:flutter_firebaseapp/src/screens/profile_screen.dart';
 import 'package:intl/intl.dart';
 
-class OrderTransaction extends StatelessWidget {
-  // final String userEmail;
-  const OrderTransaction({
-    super.key,
-    // required this.userEmail,
-  });
+class OrdersScreen extends StatefulWidget {
+  const OrdersScreen({super.key});
 
+  @override
+  State<OrdersScreen> createState() => _OrdersScreenState();
+}
+
+class _OrdersScreenState extends State<OrdersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 5,
         automaticallyImplyLeading: false,
         title: textFormTemplate(
-          'Order History',
+          'Order List',
           true,
           18.0,
           Colors.amber,
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.person_outline,
-              color: Colors.amber,
-            ),
-            tooltip: 'Open shopping cart',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const UserProfile()),
-              ); // handle the press
-            },
-          ),
-        ],
       ),
       body: FutureBuilder(
-        future: Order.readOrdersBy(),
+        future: Order.readOrders(),
         builder: (BuildContext context, AsyncSnapshot<List<Order>> snapshot) {
           if (snapshot.hasData) {
             var dorders = snapshot.data!;
@@ -94,11 +77,28 @@ class OrderTransaction extends StatelessWidget {
                                     14,
                                     Colors.white54,
                                   ),
-                                  textFormTemplate(
-                                    order.orderStatus,
-                                    true,
-                                    14,
-                                    Colors.white70,
+                                  GestureDetector(
+                                    child: textFormTemplate(
+                                      order.orderStatus,
+                                      true,
+                                      14,
+                                      Colors.white70,
+                                    ),
+                                    onLongPress: () {
+                                      // print(order.orderId!);
+                                      order.orderStatus == 'Request'
+                                          ? Order.updateUserStatus(
+                                              'Ready', order.orderId!)
+                                          : null;
+                                      setState(() {});
+                                    },
+                                    onDoubleTap: () {
+                                      order.orderStatus == 'Ready'
+                                          ? Order.updateUserStatus(
+                                              'Request', order.orderId!)
+                                          : null;
+                                      setState(() {});
+                                    },
                                   ),
                                 ],
                               ),
@@ -144,23 +144,6 @@ class OrderTransaction extends StatelessWidget {
               color: Colors.white,
             );
           }
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        shape: const CircleBorder(),
-        elevation: 5,
-        backgroundColor: Colors.black,
-        child: const Icon(
-          Icons.add_shopping_cart,
-          color: Colors.amber,
-        ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const OrderScreen(),
-            ),
-          );
         },
       ),
     );
