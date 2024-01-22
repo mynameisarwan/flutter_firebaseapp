@@ -61,8 +61,8 @@ class Order {
     final sel = await docUser.where('OrderBy', isEqualTo: userName).get().then(
           (value) => value.docs
               .map(
-                (e) => Order.fromJason(
-                  e.data(),
+                (e) => Order.fromQDS(
+                  e,
                 ),
               )
               .toList(),

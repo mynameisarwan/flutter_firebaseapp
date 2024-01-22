@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
 import 'package:flutter_firebaseapp/src/models/order.dart';
+import 'package:flutter_firebaseapp/src/screens/paymenthistory_screen.dart';
 import 'package:intl/intl.dart';
 
 class OrdersScreen extends StatefulWidget {
@@ -33,105 +34,127 @@ class _OrdersScreenState extends State<OrdersScreen> {
             return ListView(
               children: [
                 for (var order in dorders) ...{
-                  Card(
-                    color: Colors.black,
-                    elevation: 5,
-                    shadowColor: Colors.black,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListTile(
-                          leading: const CircleAvatar(
-                            backgroundColor: Colors.amber,
-                            child: Icon(
-                              Icons.shopping_bag_rounded,
-                              color: Colors.white,
+                  GestureDetector(
+                    onTap: () {
+                      // print('object');
+                      order.orderStatus == 'Recheived'
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute<void>(
+                                builder: (BuildContext context) =>
+                                    PaymentHistoryScreen(ordermdl: order),
+                              ),
+                            )
+                          : null;
+                    },
+                    child: Card(
+                      color: Colors.black,
+                      elevation: 5,
+                      shadowColor: Colors.black,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListTile(
+                            leading: const CircleAvatar(
+                              backgroundColor: Colors.amber,
+                              child: Icon(
+                                Icons.shopping_bag_rounded,
+                                color: Colors.white,
+                              ),
                             ),
+                            title: textFormTemplate(
+                              order.productType,
+                              true,
+                              18,
+                              Colors.amber,
+                            ),
+                            subtitle: textFormTemplate(
+                              '${order.orderQty} Botol',
+                              false,
+                              14,
+                              Colors.white54,
+                            ),
+                            isThreeLine: true,
                           ),
-                          title: textFormTemplate(
-                            order.productType,
-                            true,
-                            18,
-                            Colors.amber,
-                          ),
-                          subtitle: textFormTemplate(
-                            '${order.orderQty} Botol',
-                            false,
-                            14,
-                            Colors.white54,
-                          ),
-                          isThreeLine: true,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  textFormTemplate(
-                                    'Total Belanja : ',
-                                    false,
-                                    14,
-                                    Colors.white54,
-                                  ),
-                                  GestureDetector(
-                                    child: textFormTemplate(
-                                      order.orderStatus,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    textFormTemplate(
+                                      'Total Belanja : ',
+                                      false,
+                                      14,
+                                      Colors.white54,
+                                    ),
+                                    GestureDetector(
+                                      child: textFormTemplate(
+                                        order.orderStatus,
+                                        true,
+                                        14,
+                                        Colors.white70,
+                                      ),
+                                      onLongPress: () {
+                                        order.orderStatus == 'Request'
+                                            ? Order.updateUserStatus(
+                                                'Ready',
+                                                order.orderId!,
+                                              )
+                                            : order.orderStatus == 'Ready'
+                                                ? Order.updateUserStatus(
+                                                    'Delivered',
+                                                    order.orderId!,
+                                                  )
+                                                : null;
+                                        setState(() {});
+                                      },
+                                      onDoubleTap: () {
+                                        order.orderStatus == 'Ready'
+                                            ? Order.updateUserStatus(
+                                                'Request',
+                                                order.orderId!,
+                                              )
+                                            : null;
+                                        setState(() {});
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    textFormTemplate(
+                                      NumberFormat.currency(locale: 'id_ID')
+                                          .format(
+                                        order.orderPrice * order.orderQty,
+                                      ),
                                       true,
                                       14,
                                       Colors.white70,
                                     ),
-                                    onLongPress: () {
-                                      // print(order.orderId!);
-                                      order.orderStatus == 'Request'
-                                          ? Order.updateUserStatus(
-                                              'Ready', order.orderId!)
-                                          : null;
-                                      setState(() {});
-                                    },
-                                    onDoubleTap: () {
-                                      order.orderStatus == 'Ready'
-                                          ? Order.updateUserStatus(
-                                              'Request', order.orderId!)
-                                          : null;
-                                      setState(() {});
-                                    },
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  textFormTemplate(
-                                    NumberFormat.currency(locale: 'id_ID')
-                                        .format(
-                                      order.orderPrice * order.orderQty,
+                                    textFormTemplate(
+                                      DateFormat('dd MMMM yyyy').format(
+                                        order.orderDate,
+                                      ),
+                                      false,
+                                      14,
+                                      Colors.white70,
                                     ),
-                                    true,
-                                    14,
-                                    Colors.white70,
-                                  ),
-                                  textFormTemplate(
-                                    DateFormat('dd MMMM yyyy').format(
-                                      order.orderDate,
-                                    ),
-                                    false,
-                                    14,
-                                    Colors.white70,
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              )
-                            ],
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 }

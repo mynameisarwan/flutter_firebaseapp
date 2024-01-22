@@ -1,35 +1,5 @@
 import 'package:flutter/material.dart';
 
-// Future displayBottomSheetTemplate(
-//   BuildContext context,
-//   List<String> statuslist,
-//   String? selectedvalue,
-//   Function(String?)? onchage,
-// ) {
-//   return showModalBottomSheet(
-//     context: context,
-//     shape: const RoundedRectangleBorder(
-//       borderRadius: BorderRadius.vertical(
-//         top: Radius.circular(30),
-//       ),
-//     ),
-//     builder: (context) => Container(
-//       height: 300,
-//       padding: const EdgeInsets.fromLTRB(
-//         5,
-//         50,
-//         5,
-//         5,
-//       ),
-//       child: RadioButtonController(
-//         statuslist: statuslist,
-//         selectedvalue: selectedvalue,
-//         onchage: onchage,
-//       ),
-//     ),
-//   );
-// }
-
 Text textFormTemplate(
   String textlabe,
   bool isbold,
@@ -68,16 +38,67 @@ Image profileImage(
   );
 }
 
+TextFormField textFieldTemplFormOnChange(
+  TextEditingController controller,
+  String labelText,
+  IconData icon,
+  TextInputType inputType,
+  bool readOnly,
+  void Function(String)? onChanged,
+) {
+  return TextFormField(
+    onChanged: onChanged,
+    controller: controller,
+    readOnly: readOnly,
+    style: TextStyle(
+      color: Colors.white.withOpacity(0.9),
+    ),
+    keyboardType: inputType,
+    decoration: InputDecoration(
+      labelText: labelText,
+      labelStyle: TextStyle(
+        color: Colors.white.withOpacity(0.9),
+        fontSize: 18,
+      ),
+      prefixIcon: Icon(
+        icon,
+        color: Colors.white.withOpacity(0.7),
+        weight: 10,
+      ),
+      filled: true,
+      fillColor: Colors.white.withOpacity(0.1),
+      enabledBorder: const UnderlineInputBorder(
+        borderRadius: BorderRadius.horizontal(
+          left: Radius.circular(10),
+          right: Radius.circular(10),
+        ),
+        borderSide: BorderSide(
+          style: BorderStyle.solid,
+          color: Color.fromARGB(255, 255, 140, 0),
+          width: 1.0,
+        ),
+      ),
+      focusedBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(
+          style: BorderStyle.solid,
+          color: Color.fromARGB(255, 255, 213, 0),
+          width: 2.0,
+        ),
+      ),
+    ),
+  );
+}
+
 TextFormField textFieldTemplForm(
   TextEditingController controller,
   String labelText,
   IconData icon,
   TextInputType inputType,
-  bool enabled,
+  bool readOnly,
 ) {
   return TextFormField(
     controller: controller,
-    enabled: enabled,
+    readOnly: readOnly,
     style: TextStyle(
       color: Colors.white.withOpacity(0.9),
     ),
