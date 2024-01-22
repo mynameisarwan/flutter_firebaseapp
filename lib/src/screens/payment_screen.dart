@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_button.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
 import 'package:flutter_firebaseapp/src/models/order.dart';
+import 'package:flutter_firebaseapp/src/models/payment.dart';
 import 'package:intl/intl.dart';
 // import 'package:flutter_firebaseapp/src/models/order.dart';
 
@@ -21,8 +22,27 @@ class _PaymentScreenState extends State<PaymentScreen> {
   TextEditingController price = TextEditingController();
   TextEditingController qty = TextEditingController();
   DateTime tanggal = DateTime.now();
-
+  num paymentprice = 0;
   num maxQty = 0;
+
+  getvalue() {
+    Payment.getTotalPaidQTY(widget.ordermdl.orderId!).then(
+      (value) {
+        for (var dt in value) {
+          maxQty = maxQty + dt.paymentQty;
+        }
+        maxQty = widget.ordermdl.orderQty - maxQty;
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    getvalue();
+    // print('maxqty = $maxQty');
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -74,18 +94,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // textFieldTemplForm(
-              //   product = TextEditingController(
-              //     text: widget.productName,
-              //   ),
-              //   'Product',
-              //   Icons.production_quantity_limits_rounded,
-              //   TextInputType.none,
-              //   true,
-              // ),
               textFieldCalendarTemplForm(
                 paymentDate,
-                'Tanggal',
+                'Tanggal Pembayaran',
                 Icons.calendar_today,
                 TextInputType.text,
                 () {
@@ -109,7 +120,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   );
                 },
               ),
-
               SizedBox(
                 height: screenSize.height * 0.01,
               ),
@@ -123,20 +133,23 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 },
                 child: textFieldTemplFormOnChange(
                   qty,
-                  'Jumlah pembelian',
+                  'Jumlah pembayaran',
                   Icons.shopify_outlined,
                   TextInputType.number,
                   false,
                   (values) {
                     setState(
                       () {
-                        if (int.parse(values) > widget.ordermdl.orderQty) {
-                          qty = TextEditingController(
-                            text: widget.ordermdl.orderQty.toString(),
-                          );
-                          maxQty = widget.ordermdl.orderQty;
-                        } else {
-                          maxQty = int.parse(values);
+                        if (values != '') {
+                          if (num.parse(values) > maxQty) {
+                            qty = TextEditingController(
+                              text: maxQty.toString(),
+                            );
+                            // maxQty = widget.ordermdl.orderQty;
+                          } else {
+                            maxQty = num.parse(values);
+                          }
+                          paymentprice = maxQty * widget.ordermdl.orderPrice;
                         }
                       },
                     );
@@ -148,10 +161,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ),
               textFieldTemplForm(
                 price = TextEditingController(
-                  text: NumberFormat.decimalPattern()
-                      .format(maxQty * widget.ordermdl.orderPrice),
+                  text: NumberFormat.decimalPattern().format(paymentprice),
                 ),
-                'Price',
+                'Nilai Pembayaran',
                 Icons.attach_money_rounded,
                 TextInputType.none,
                 true,
@@ -159,7 +171,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
               const Spacer(),
               ButtonTemplate(
                 buttonText: 'Submit',
-                onPressed: () {},
+                onPressed: () {
+                  Payment data = Payment(
+                    paymentQty: num.parse(qty.text),
+                    paymentDate: tanggal,
+                    paymentPrice: paymentprice,
+                    paymentStatus: 'Paid',
+                  );
+                  Payment.paymentAdd(data, widget.ordermdl.orderId!);
+                },
               ),
             ],
           ),

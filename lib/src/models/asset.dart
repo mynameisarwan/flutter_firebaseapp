@@ -101,12 +101,7 @@ class Asset {
         .map(
           (ss) => ss.docs.map(
             (doc) {
-              // Map<String, dynamic> json = doc.data();
               return Asset.fromDS(doc);
-              // return Asset(
-              //   assetType: doc.reference.id,
-              //   sellingPrice: json['SellingPrice'],
-              // );
             },
           ).toList(),
         )
