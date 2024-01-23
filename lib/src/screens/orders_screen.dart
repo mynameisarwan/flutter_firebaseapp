@@ -37,7 +37,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   GestureDetector(
                     onTap: () {
                       // print('object');
-                      order.orderStatus == 'Recheived'
+                      order.orderStatus == 'Received'
                           ? Navigator.push(
                               context,
                               MaterialPageRoute<void>(
@@ -54,6 +54,18 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: textFormTemplate(
+                              order.orderBy,
+                              true,
+                              14,
+                              Colors.amber[800]!,
+                            ),
+                          ),
                           ListTile(
                             leading: const CircleAvatar(
                               backgroundColor: Colors.amber,

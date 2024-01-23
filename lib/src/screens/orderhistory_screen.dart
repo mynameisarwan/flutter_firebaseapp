@@ -58,7 +58,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                 for (var order in dorders) ...{
                   GestureDetector(
                     onTap: () {
-                      order.orderStatus == 'Recheived'
+                      order.orderStatus == 'Received'
                           ? Navigator.push(
                               context,
                               MaterialPageRoute<void>(
@@ -144,7 +144,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                                       onLongPress: () {
                                         order.orderStatus == 'Delivered'
                                             ? Order.updateOrderStatus(
-                                                'Recheived',
+                                                'Received',
                                                 order.orderId!,
                                               )
                                             : null;
