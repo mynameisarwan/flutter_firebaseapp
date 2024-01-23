@@ -6,18 +6,18 @@ import 'package:flutter_firebaseapp/src/screens/paymenthistory_screen.dart';
 import 'package:flutter_firebaseapp/src/screens/profile_screen.dart';
 import 'package:intl/intl.dart';
 
-class OrderTransaction extends StatefulWidget {
+class OrderHistory extends StatefulWidget {
   // final String userEmail;
-  const OrderTransaction({
+  const OrderHistory({
     super.key,
     // required this.userEmail,
   });
 
   @override
-  State<OrderTransaction> createState() => _OrderTransactionState();
+  State<OrderHistory> createState() => _OrderHistoryState();
 }
 
-class _OrderTransactionState extends State<OrderTransaction> {
+class _OrderHistoryState extends State<OrderHistory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,11 +83,33 @@ class _OrderTransactionState extends State<OrderTransaction> {
                                 color: Colors.white,
                               ),
                             ),
-                            title: textFormTemplate(
-                              order.productType,
-                              true,
-                              18,
-                              Colors.amber,
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                textFormTemplate(
+                                  order.productType,
+                                  true,
+                                  18,
+                                  Colors.amber,
+                                ),
+                                GestureDetector(
+                                  onLongPress: () {
+                                    if (order.orderStatus == 'Request') {
+                                      Order.deleteDocById(
+                                        order.orderId!,
+                                      );
+                                    }
+                                    setState(() {});
+                                  },
+                                  child: Icon(
+                                    Icons.close_rounded,
+                                    color: order.orderStatus == 'Request'
+                                        ? Colors.red
+                                        : Colors.white.withOpacity(0.1),
+                                    size: 14,
+                                  ),
+                                ),
+                              ],
                             ),
                             subtitle: textFormTemplate(
                               '${order.orderQty} Botol',
@@ -121,7 +143,7 @@ class _OrderTransactionState extends State<OrderTransaction> {
                                       ),
                                       onLongPress: () {
                                         order.orderStatus == 'Delivered'
-                                            ? Order.updateUserStatus(
+                                            ? Order.updateOrderStatus(
                                                 'Recheived',
                                                 order.orderId!,
                                               )

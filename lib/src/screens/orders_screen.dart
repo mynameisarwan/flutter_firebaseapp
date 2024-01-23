@@ -100,12 +100,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                       ),
                                       onLongPress: () {
                                         order.orderStatus == 'Request'
-                                            ? Order.updateUserStatus(
+                                            ? Order.updateOrderStatus(
                                                 'Ready',
                                                 order.orderId!,
                                               )
                                             : order.orderStatus == 'Ready'
-                                                ? Order.updateUserStatus(
+                                                ? Order.updateOrderStatus(
                                                     'Delivered',
                                                     order.orderId!,
                                                   )
@@ -114,7 +114,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                       },
                                       onDoubleTap: () {
                                         order.orderStatus == 'Ready'
-                                            ? Order.updateUserStatus(
+                                            ? Order.updateOrderStatus(
                                                 'Request',
                                                 order.orderId!,
                                               )

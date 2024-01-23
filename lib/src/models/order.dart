@@ -70,7 +70,8 @@ class Order {
     return sel;
   }
 
-  static Future<void> updateUserStatus(String orderStatus, String docid) async {
+  static Future<void> updateOrderStatus(
+      String orderStatus, String docid) async {
     var db = FirebaseFirestore.instance;
     final docUser = db.collection('Orders').doc(docid);
     docUser.update({'OrderStatus': orderStatus});
@@ -99,5 +100,15 @@ class Order {
       data.toJason(),
     );
     return data;
+  }
+
+  static Future<String> deleteDocById(String orderId) async {
+    var db = FirebaseFirestore.instance;
+    return await db.collection('Orders').doc(orderId).delete().then(
+      (value) => 'the Data has been deleted',
+      onError: (e) {
+        return 'Error : ${e.toString()}';
+      },
+    );
   }
 }

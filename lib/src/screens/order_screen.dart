@@ -5,7 +5,7 @@ import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
 import 'package:flutter_firebaseapp/src/features/controllers/reference_controller.dart';
 import 'package:flutter_firebaseapp/src/models/asset.dart';
 import 'package:flutter_firebaseapp/src/models/order.dart';
-import 'package:flutter_firebaseapp/src/screens/ordertransaction_screen.dart';
+import 'package:flutter_firebaseapp/src/screens/orderhistory_screen.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -137,7 +137,7 @@ class _OrderScreenState extends State<OrderScreen> {
                 'Jumlah pembelian',
                 Icons.shopify_outlined,
                 TextInputType.number,
-                true,
+                false,
               ),
               const Spacer(),
               ButtonTemplate(
@@ -159,8 +159,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          const OrderTransaction(),
+                      builder: (BuildContext context) => const OrderHistory(),
                     ),
                   );
                 },

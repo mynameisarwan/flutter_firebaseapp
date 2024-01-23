@@ -5,7 +5,7 @@ import 'package:flutter_firebaseapp/src/features/controllers/reference_controlle
 import 'package:flutter_firebaseapp/src/models/user.dart';
 import 'package:flutter_firebaseapp/src/screens/navigation_screen.dart';
 import 'package:flutter_firebaseapp/src/screens/myaccount_screen.dart';
-import 'package:flutter_firebaseapp/src/screens/ordertransaction_screen.dart';
+import 'package:flutter_firebaseapp/src/screens/orderhistory_screen.dart';
 
 class VerificationController extends StatefulWidget {
   const VerificationController({super.key, required this.userEmail});
@@ -78,7 +78,7 @@ class _VerificationControllerState extends State<VerificationController> {
                       userEmail: widget.userEmail,
                       scrIdx: 0,
                     )
-                  : const OrderTransaction(
+                  : const OrderHistory(
                       // userEmail: widget.userEmail,
                       );
         } else {
