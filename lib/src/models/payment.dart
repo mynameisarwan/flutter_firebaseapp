@@ -30,6 +30,15 @@ class Payment {
         paymentStatus: json['PaymentStatus'],
       );
 
+  static Payment fromQDS(QueryDocumentSnapshot<Map<String, dynamic>> qds) =>
+      Payment(
+        paymentKey: qds.reference.id,
+        paymentQty: qds.data()['PaymentQty'],
+        paymentDate: (qds.data()['PaymentDate'] as Timestamp).toDate(),
+        paymentPrice: qds.data()['PaymentPrice'],
+        paymentStatus: qds.data()['PaymentStatus'],
+      );
+
   static Future<Payment> paymentAdd(Payment data, String orderKey) async {
     var db = FirebaseFirestore.instance;
     final addOrder =
@@ -40,7 +49,7 @@ class Payment {
     return data;
   }
 
-  static Future<List<Payment>> getTotalPaidQTY(String orderKey) async {
+  static Future<List<Payment>> readPaymentPerOrder(String orderKey) async {
     // num totalQty = 0;
 
     var db = FirebaseFirestore.instance;
@@ -52,20 +61,29 @@ class Payment {
         .then(
           (value) => value.docs
               .map(
-                (e) => Payment.fromJason(
-                  e.data(),
+                (e) => Payment.fromQDS(
+                  e,
                 ),
               )
               .toList(),
         );
 
-    // print('test');
-    // for (var data in scPayment) {
-    //   totalQty = totalQty + data.paymentQty;
-    // }
-    // print('totalqty = $totalQty');
     return getpayment;
   }
 
-  // Payment fromQDS(QueryDocumentSnapshot<Map<String,dynamic>> qds ) => Payment(paymentQty: paymentQty, paymentDate: paymentDate, paymentPrice: paymentPrice)
+  static Future<String> deleteDocById(String orderId, String paymentId) async {
+    var db = FirebaseFirestore.instance;
+    return await db
+        .collection('Orders')
+        .doc(orderId)
+        .collection('Payments')
+        .doc(paymentId)
+        .delete()
+        .then(
+      (value) => 'the Data has been deleted',
+      onError: (e) {
+        return 'Error : ${e.toString()}';
+      },
+    );
+  }
 }

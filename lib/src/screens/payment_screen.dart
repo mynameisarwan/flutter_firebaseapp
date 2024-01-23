@@ -26,7 +26,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   num maxQty = 0;
 
   getvalue() {
-    Payment.getTotalPaidQTY(widget.ordermdl.orderId!).then(
+    Payment.readPaymentPerOrder(widget.ordermdl.orderId!).then(
       (value) {
         for (var dt in value) {
           maxQty = maxQty + dt.paymentQty;
@@ -39,7 +39,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   void initState() {
     getvalue();
-    // print('maxqty = $maxQty');
     super.initState();
   }
 

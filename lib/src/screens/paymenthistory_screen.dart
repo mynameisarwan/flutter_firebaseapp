@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
 import 'package:flutter_firebaseapp/src/models/order.dart';
+import 'package:flutter_firebaseapp/src/models/payment.dart';
 import 'package:flutter_firebaseapp/src/screens/payment_screen.dart';
+import 'package:intl/intl.dart';
 
-class PaymentHistoryScreen extends StatelessWidget {
+class PaymentHistoryScreen extends StatefulWidget {
   final Order ordermdl;
   const PaymentHistoryScreen({
     super.key,
     required this.ordermdl,
   });
 
+  @override
+  State<PaymentHistoryScreen> createState() => _PaymentHistoryScreenState();
+}
+
+class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,11 +34,120 @@ class PaymentHistoryScreen extends StatelessWidget {
         ),
         elevation: 5,
         title: textFormTemplate(
-          'Payment ${ordermdl.productType}',
+          'Payment ${widget.ordermdl.productType}',
           true,
           18.0,
           Colors.amber,
         ),
+      ),
+      body: FutureBuilder(
+        future: Payment.readPaymentPerOrder(widget.ordermdl.orderId!),
+        builder: (BuildContext context, AsyncSnapshot<List<Payment>> snapshot) {
+          if (snapshot.hasData) {
+            var payments = snapshot.data!;
+            return ListView(children: [
+              for (var data in payments) ...{
+                Card(
+                  color: Colors.black,
+                  elevation: 5,
+                  shadowColor: Colors.black,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ListTile(
+                        leading: const CircleAvatar(
+                          backgroundColor: Colors.amber,
+                          child: Icon(
+                            Icons.payments_rounded,
+                            color: Colors.white,
+                          ),
+                        ),
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            textFormTemplate(
+                              data.paymentStatus,
+                              true,
+                              18,
+                              Colors.amber,
+                            ),
+                            GestureDetector(
+                              onLongPress: () {
+                                Payment.deleteDocById(
+                                  widget.ordermdl.orderId!,
+                                  data.paymentKey!,
+                                );
+                                setState(() {});
+                              },
+                              child: const Icon(
+                                Icons.close_rounded,
+                                color: Colors.red,
+                                size: 14,
+                              ),
+                            )
+                          ],
+                        ),
+                        subtitle: textFormTemplate(
+                          '${data.paymentQty} botol',
+                          false,
+                          14,
+                          Colors.white54,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                textFormTemplate(
+                                  'Total Pembayaran : ',
+                                  false,
+                                  14,
+                                  Colors.white54,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                textFormTemplate(
+                                  NumberFormat.currency(locale: 'id_ID').format(
+                                    data.paymentPrice,
+                                  ),
+                                  true,
+                                  14,
+                                  Colors.white70,
+                                ),
+                                textFormTemplate(
+                                  DateFormat('dd MMMM yyyy')
+                                      .format(data.paymentDate),
+                                  false,
+                                  14,
+                                  Colors.white70,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              }
+            ]);
+          } else if (snapshot.hasError) {
+            return textFormTemplate(
+                'Error : ${snapshot.error.toString()}', true, 14, Colors.black);
+          } else {
+            return const CircularProgressIndicator();
+          }
+        },
       ),
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
@@ -46,7 +162,7 @@ class PaymentHistoryScreen extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => PaymentScreen(
-                ordermdl: ordermdl,
+                ordermdl: widget.ordermdl,
               ),
             ),
           );
