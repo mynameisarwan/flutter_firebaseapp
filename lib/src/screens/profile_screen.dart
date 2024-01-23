@@ -7,8 +7,8 @@ import 'package:flutter_firebaseapp/src/screens/signin_screen.dart';
 import '../models/user.dart' as model;
 
 String userEmail = "";
-String userName = "";
-AsyncSnapshot<model.User?>? dataUser;
+// String userName = "";
+// AsyncSnapshot<model.User?>? dataUser;
 
 var db = FirebaseFirestore.instance;
 
@@ -66,6 +66,11 @@ class UserProfile extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () {
+                            setReference({
+                              'userEmail': null,
+                              'userName': null,
+                              'userRole': null,
+                            });
                             FirebaseAuth.instance.signOut().then(
                               (value) {
                                 Navigator.push(

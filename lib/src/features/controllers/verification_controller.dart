@@ -51,6 +51,7 @@ class _VerificationControllerState extends State<VerificationController> {
         {
           'userEmail': data.profileEmail,
           'userName': data.profileName,
+          'userRole': data.profileStatus,
         },
       );
       return User.fromJason(sel.data()!);

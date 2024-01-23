@@ -86,4 +86,20 @@ class Payment {
       },
     );
   }
+
+  static Future<String> updateStatus(
+      String orderId, String paymentId, String paymentStatus) async {
+    var db = FirebaseFirestore.instance;
+    return await db
+        .collection('Orders')
+        .doc(orderId)
+        .collection('Payments')
+        .doc(paymentId)
+        .update({'PaymentStatus': paymentStatus}).then(
+      (value) => 'Update Complete',
+      onError: (e) {
+        return 'Error ${e.toString()}';
+      },
+    );
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
+import 'package:flutter_firebaseapp/src/features/controllers/reference_controller.dart';
 import 'package:flutter_firebaseapp/src/models/order.dart';
 import 'package:flutter_firebaseapp/src/models/payment.dart';
 import 'package:flutter_firebaseapp/src/screens/payment_screen.dart';
@@ -17,6 +18,21 @@ class PaymentHistoryScreen extends StatefulWidget {
 }
 
 class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
+  String? userRole;
+  @override
+  void initState() {
+    getReference().then(
+      (data) {
+        setState(
+          () {
+            userRole = data['userRole'];
+          },
+        );
+      },
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,23 +81,39 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            textFormTemplate(
-                              data.paymentStatus,
-                              true,
-                              18,
-                              Colors.amber,
-                            ),
                             GestureDetector(
                               onLongPress: () {
-                                Payment.deleteDocById(
+                                Payment.updateStatus(
                                   widget.ordermdl.orderId!,
                                   data.paymentKey!,
+                                  'Paid (Confirmed)',
                                 );
                                 setState(() {});
                               },
-                              child: const Icon(
+                              child: textFormTemplate(
+                                data.paymentStatus,
+                                true,
+                                18,
+                                Colors.amber,
+                              ),
+                            ),
+                            GestureDetector(
+                              onLongPress: () {
+                                if (userRole! == 'Reseller' &&
+                                    data.paymentStatus == 'Paid') {
+                                  Payment.deleteDocById(
+                                    widget.ordermdl.orderId!,
+                                    data.paymentKey!,
+                                  );
+                                }
+                                setState(() {});
+                              },
+                              child: Icon(
                                 Icons.close_rounded,
-                                color: Colors.red,
+                                color: userRole! == 'Administrator' ||
+                                        data.paymentStatus == 'Paid (Confirmed)'
+                                    ? Colors.white30
+                                    : Colors.red,
                                 size: 14,
                               ),
                             )
