@@ -3,10 +3,11 @@ import 'package:flutter_firebaseapp/src/features/controllers/navigation_controll
 import 'package:get/get.dart';
 
 class NavigationScreen extends StatelessWidget {
-  final String userEmail;
   final int scrIdx;
-  const NavigationScreen(
-      {super.key, required this.userEmail, required this.scrIdx});
+  const NavigationScreen({
+    super.key,
+    required this.scrIdx,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +17,7 @@ class NavigationScreen extends StatelessWidget {
       body: Obx(
         // () => controller.screens[controller.selectedIndex.value],
         () {
+          // print('scridx is ${controller.selectedIndex.value}');
           if (scrIdx == 0) {
             return controller.screens[controller.selectedIndex.value];
           } else {

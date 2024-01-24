@@ -17,7 +17,7 @@ class VerificationController extends StatefulWidget {
 
 class _VerificationControllerState extends State<VerificationController> {
   late bool _visible;
-  String userEmail = "";
+
   var db = FirebaseFirestore.instance;
   @override
   void initState() {
@@ -44,9 +44,8 @@ class _VerificationControllerState extends State<VerificationController> {
 
     final sel = await docUser.get();
     if (sel.exists) {
-      // return null;
       User data = User.fromJason(sel.data()!);
-      userEmail = widget.userEmail;
+
       setReference(
         {
           'userEmail': data.profileEmail,
@@ -75,13 +74,10 @@ class _VerificationControllerState extends State<VerificationController> {
                   userEmail: widget.userEmail,
                 )
               : status == 'Administrator'
-                  ? NavigationScreen(
-                      userEmail: widget.userEmail,
+                  ? const NavigationScreen(
                       scrIdx: 0,
                     )
-                  : const OrderHistory(
-                      // userEmail: widget.userEmail,
-                      );
+                  : const OrderHistory();
         } else {
           return Scaffold(
             body: Container(

@@ -132,8 +132,9 @@ class _SignInScreenState extends State<SignInScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  VerificationController(userEmail: _emailTextController.text),
+              builder: (context) => VerificationController(
+                userEmail: _emailTextController.text,
+              ),
             ),
           );
         },

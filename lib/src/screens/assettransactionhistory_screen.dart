@@ -93,8 +93,7 @@ class _AssetTransHistoryState extends State<AssetTransHistory> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      NavigationScreen(userEmail: userEmail!, scrIdx: 0),
+                  builder: (context) => const NavigationScreen(scrIdx: 0),
                 ),
               ); // handle the press
             },

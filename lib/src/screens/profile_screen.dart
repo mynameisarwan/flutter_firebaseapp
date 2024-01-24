@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
+import 'package:flutter_firebaseapp/src/features/controllers/navigation_controller.dart';
 import 'package:flutter_firebaseapp/src/features/controllers/reference_controller.dart';
 import 'package:flutter_firebaseapp/src/screens/signin_screen.dart';
+import 'package:get/get.dart';
 import '../models/user.dart' as model;
 
 String userEmail = "";
@@ -66,6 +68,9 @@ class UserProfile extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () {
+                            final controller = Get.put(NavigationController());
+                            controller.selectedIndex.value = 0;
+
                             setReference({
                               'userEmail': null,
                               'userName': null,

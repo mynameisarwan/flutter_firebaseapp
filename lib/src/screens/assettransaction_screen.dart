@@ -58,8 +58,7 @@ class _AssetTransactionScreenState extends State<AssetTransactionScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    NavigationScreen(userEmail: widget.userEmail, scrIdx: 0),
+                builder: (context) => const NavigationScreen(scrIdx: 0),
               ),
             );
           },
