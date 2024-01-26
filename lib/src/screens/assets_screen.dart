@@ -117,9 +117,6 @@ class _AssetsScreenState extends State<AssetsScreen> {
                           16,
                           Colors.amber,
                         ),
-                        // const SizedBox(
-                        //   height: 5,
-                        // ),
                         textFormTemplate(
                           'harga jual : ${NumberFormat.simpleCurrency(locale: 'id_ID').format(asset.sellingPrice!.toInt())}',
                           false,

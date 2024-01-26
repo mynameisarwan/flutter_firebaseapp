@@ -187,7 +187,6 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                       ButtonTemplate(
                         buttonText: 'Submit Form',
                         onPressed: () {
-                          // try{} catch
                           User.addUser(
                             profileName: _userNameTextController.text,
                             profileEmail: widget.userEmail,
@@ -253,10 +252,8 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                             value: UserGenderEnum.male,
                             userGenderEnum: _gender,
                             onChanged: (val) {
-                              // print(_gender);
                               setState(() {
                                 _gender = val;
-                                // print(_gender);
                               });
                             },
                           ),

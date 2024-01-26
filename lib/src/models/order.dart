@@ -54,8 +54,8 @@ class Order {
     var db = FirebaseFirestore.instance;
     final docUser = db.collection('Orders');
 
-    userName = await getReference().then(
-      (data) => data['userName'],
+    await getReference().then(
+      (data) => userName = data['userName'],
     );
 
     final sel = await docUser.where('OrderBy', isEqualTo: userName).get().then(

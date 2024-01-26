@@ -44,15 +44,8 @@ class _DropDownTemplateState extends State<DropDownTemplate> {
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           icon: const Icon(Icons.expand_circle_down_outlined),
-          // controller: widget.controller,
           value: _currentItem,
-          // textStyle: const TextStyle(color: Colors.white),
-          // inputDecorationTheme: const InputDecorationTheme(
-          //   iconColor: Colors.white,
-          //   fillColor: Colors.white,
-          // ),
           onChanged: (selectedItem) {
-            // This is called when the user selects an item.
             setState(
               () {
                 widget.controller?.text = selectedItem!;
@@ -68,7 +61,6 @@ class _DropDownTemplateState extends State<DropDownTemplate> {
                     value,
                     style: const TextStyle(
                       fontSize: 14,
-                      // color: Colors.white,
                     ),
                   ),
                 ),

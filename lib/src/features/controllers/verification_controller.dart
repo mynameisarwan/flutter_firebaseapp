@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/features/controllers/reference_controller.dart';
@@ -18,7 +17,7 @@ class VerificationController extends StatefulWidget {
 class _VerificationControllerState extends State<VerificationController> {
   late bool _visible;
 
-  var db = FirebaseFirestore.instance;
+  // var db = FirebaseFirestore.instance;
   @override
   void initState() {
     _visible = false;
@@ -39,35 +38,26 @@ class _VerificationControllerState extends State<VerificationController> {
     );
   }
 
-  Future<User?>? readUser() async {
-    final docUser = db.collection('Users').doc(widget.userEmail);
-
-    final sel = await docUser.get();
-    if (sel.exists) {
-      User data = User.fromJason(sel.data()!);
-
-      setReference(
-        {
-          'userEmail': data.profileEmail,
-          'userName': data.profileName,
-          'userRole': data.profileStatus,
-        },
-      );
-      return User.fromJason(sel.data()!);
-    } else {
-      return null;
-    }
+  void setreference(User user) {
+    setReference(
+      {
+        'userEmail': user.profileEmail,
+        'userName': user.profileName,
+        'userRole': user.profileStatus,
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<User?>(
-      future: readUser(),
+      future: User.readUser(widget.userEmail),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Text('Error : ${snapshot.error.toString()}');
         } else if (snapshot.hasData) {
           final user = snapshot.data!;
+          setreference(user);
           String status = user.profileStatus;
           return status == 'Candidate'
               ? MyAccountScreen(

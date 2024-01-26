@@ -36,7 +36,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 for (var order in dorders) ...{
                   GestureDetector(
                     onTap: () {
-                      // print('object');
                       order.orderStatus == 'Received'
                           ? Navigator.push(
                               context,
