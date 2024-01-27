@@ -58,7 +58,10 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
       ),
       body: FutureBuilder(
         future: Payment.readPaymentPerOrder(widget.ordermdl.orderId!),
-        builder: (BuildContext context, AsyncSnapshot<List<Payment>> snapshot) {
+        builder: (
+          BuildContext context,
+          AsyncSnapshot<List<Payment>> snapshot,
+        ) {
           if (snapshot.hasData) {
             var payments = snapshot.data!;
             return ListView(children: [
@@ -112,7 +115,7 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
                                 Icons.close_rounded,
                                 color: userRole! == 'Administrator' ||
                                         data.paymentStatus == 'Paid (Confirmed)'
-                                    ? Colors.white30
+                                    ? Colors.white10
                                     : Colors.red,
                                 size: 14,
                               ),

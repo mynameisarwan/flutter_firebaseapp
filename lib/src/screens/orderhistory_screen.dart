@@ -50,7 +50,10 @@ class _OrderHistoryState extends State<OrderHistory> {
       ),
       body: FutureBuilder(
         future: Order.readOrdersBy(),
-        builder: (BuildContext context, AsyncSnapshot<List<Order>> snapshot) {
+        builder: (
+          BuildContext context,
+          AsyncSnapshot<List<Order>> snapshot,
+        ) {
           if (snapshot.hasData) {
             var dorders = snapshot.data!;
             return ListView(

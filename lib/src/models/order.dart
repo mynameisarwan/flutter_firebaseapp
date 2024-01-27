@@ -58,7 +58,13 @@ class Order {
       (data) => userName = data['userName'],
     );
 
-    final sel = await docUser.where('OrderBy', isEqualTo: userName).get().then(
+    final sel = await docUser
+        .where(
+          'OrderBy',
+          isEqualTo: userName,
+        )
+        .get()
+        .then(
           (value) => value.docs
               .map(
                 (e) => Order.fromQDS(
