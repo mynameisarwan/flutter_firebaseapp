@@ -52,7 +52,7 @@ class _OrderHistoryState extends State<OrderHistory> {
         future: Order.readOrdersBy(),
         builder: (
           BuildContext context,
-          AsyncSnapshot<List<Order>> snapshot,
+          AsyncSnapshot<List<Order>?> snapshot,
         ) {
           if (snapshot.hasData) {
             var dorders = snapshot.data!;

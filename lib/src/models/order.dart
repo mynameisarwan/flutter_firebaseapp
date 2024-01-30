@@ -49,7 +49,7 @@ class Order {
         orderPrice: qdsjson.data()['OrderPrice'],
       );
 
-  static Future<List<Order>> readOrdersBy() async {
+  static Future<List<Order>?> readOrdersBy() async {
     String userName = '';
     var db = FirebaseFirestore.instance;
     final docUser = db.collection('Orders');
@@ -57,6 +57,8 @@ class Order {
     await getReference().then(
       (data) => userName = data['userName'],
     );
+
+    // print('username adalah $userName');
 
     final sel = await docUser
         .where(
@@ -73,7 +75,11 @@ class Order {
               )
               .toList(),
         );
-    return sel;
+    if (sel.isNotEmpty) {
+      return sel;
+    } else {
+      return null;
+    }
   }
 
   static Future<void> updateOrderStatus(
