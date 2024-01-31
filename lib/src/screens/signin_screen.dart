@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
-import 'package:flutter_firebaseapp/src/features/controllers/verification_controller.dart';
 import 'package:flutter_firebaseapp/src/screens/signup_screen.dart';
+import 'package:flutter_firebaseapp/src/screens/verificationemail_screen.dart';
 // import 'package:flutterfirebase_apps/src/utils/color_utils.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -132,8 +132,9 @@ class _SignInScreenState extends State<SignInScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => VerificationController(
+              builder: (context) => VerifyEmailPage(
                 userEmail: _emailTextController.text,
+                isSignup: false,
               ),
             ),
           );

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebaseapp/src/common_widgets/template_widgets.dart';
-import 'package:flutter_firebaseapp/src/screens/myaccount_screen.dart';
+import 'package:flutter_firebaseapp/src/screens/verificationemail_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -117,7 +117,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       try {
                         await FirebaseAuth.instance
                             .createUserWithEmailAndPassword(
-                          email: _emailTextController.text,
+                          email: _emailTextController.text.trim(),
                           password: _passwordTextController.text,
                         )
                             .then(
@@ -125,8 +125,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => MyAccountScreen(
-                                  userEmail: _emailTextController.text,
+                                builder: (context) => VerifyEmailPage(
+                                  userEmail: _emailTextController.text.trim(),
+                                  isSignup: true,
                                 ),
                               ),
                             );

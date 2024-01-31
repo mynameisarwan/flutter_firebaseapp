@@ -1,5 +1,23 @@
 import 'package:flutter/material.dart';
 
+Text textAlignFormTemplate({
+  required String textlabe,
+  required bool isbold,
+  required double size,
+  required Color color,
+  required TextAlign textAlign,
+}) {
+  return Text(
+    textlabe,
+    style: TextStyle(
+      color: color,
+      fontSize: size,
+      fontWeight: isbold ? FontWeight.bold : FontWeight.w300,
+    ),
+    textAlign: textAlign,
+  );
+}
+
 Text textFormTemplate(
   String textlabe,
   bool isbold,
