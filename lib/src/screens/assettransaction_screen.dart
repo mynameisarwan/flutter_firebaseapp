@@ -126,7 +126,7 @@ class _AssetTransactionScreenState extends State<AssetTransactionScreen> {
               'Jumlah Pembelian',
               Icons.shopify_outlined,
               TextInputType.number,
-              true,
+              false,
             ),
             const SizedBox(
               height: 20,
@@ -136,7 +136,7 @@ class _AssetTransactionScreenState extends State<AssetTransactionScreen> {
               'Satuan Pembelian',
               Icons.design_services_outlined,
               TextInputType.text,
-              true,
+              false,
             ),
             const SizedBox(
               height: 20,
@@ -146,7 +146,7 @@ class _AssetTransactionScreenState extends State<AssetTransactionScreen> {
               'Harga Satuan',
               Icons.price_change,
               TextInputType.number,
-              true,
+              false,
             ),
             const SizedBox(
               height: 20,
@@ -156,7 +156,7 @@ class _AssetTransactionScreenState extends State<AssetTransactionScreen> {
               'Harga Total',
               Icons.monetization_on_outlined,
               TextInputType.number,
-              true,
+              false,
             ),
             const Spacer(),
             ButtonTemplate(
