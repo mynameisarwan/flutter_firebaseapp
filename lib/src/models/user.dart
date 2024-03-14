@@ -85,16 +85,17 @@ class User {
     await userProfile.set(user.toJason());
   }
 
-  static Future<User?> readUser(String userEmail) async {
+  static Future<User> readUser(String userEmail) async {
     var db = FirebaseFirestore.instance;
     final docUser = db.collection('Users').doc(userEmail);
-
+    // print(userEmail);
     final sel = await docUser.get();
-    if (sel.exists) {
-      // return null;
-      return User.fromJason(sel.data()!);
-    } else {
-      return null;
-    }
+    return User.fromJason(sel.data()!);
+    // if (sel.exists) {
+    //   // return null;
+    //   return User.fromJason(sel.data()!);
+    // } else {
+    //   return null;
+    // }
   }
 }

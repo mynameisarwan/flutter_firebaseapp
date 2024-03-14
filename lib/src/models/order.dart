@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_firebaseapp/src/features/controllers/reference_controller.dart';
+// import 'package:flutter_firebaseapp/src/features/controllers/reference_controller.dart';
 
 class Order {
   final String productType;
@@ -49,16 +49,10 @@ class Order {
         orderPrice: qdsjson.data()['OrderPrice'],
       );
 
-  static Future<List<Order>?> readOrdersBy() async {
-    String userName = '';
+  static Future<List<Order>?> readOrdersBy(String userName) async {
     var db = FirebaseFirestore.instance;
+
     final docUser = db.collection('Orders');
-
-    await getReference().then(
-      (data) => userName = data['userName'],
-    );
-
-    // print('username adalah $userName');
 
     final sel = await docUser
         .where(

@@ -6,20 +6,39 @@ import 'package:flutter_firebaseapp/src/screens/paymenthistory_screen.dart';
 import 'package:flutter_firebaseapp/src/screens/profile_screen.dart';
 import 'package:intl/intl.dart';
 
-class OrderHistory extends StatefulWidget {
+import '../features/controllers/reference_controller.dart';
+
+class ResellerOrder extends StatefulWidget {
   // final String userEmail;
-  const OrderHistory({
+  const ResellerOrder({
     super.key,
     // required this.userEmail,
   });
 
   @override
-  State<OrderHistory> createState() => _OrderHistoryState();
+  State<ResellerOrder> createState() => _ResellerOrderState();
 }
 
-class _OrderHistoryState extends State<OrderHistory> {
+class _ResellerOrderState extends State<ResellerOrder> {
+  String userName = '';
+
+  @override
+  void initState() {
+    getReference().then((data) {
+      setState(
+        () {
+          userName = data['userName'];
+        },
+      );
+    });
+
+    // print('username init adalah $userName');
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    // initreference();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -49,7 +68,7 @@ class _OrderHistoryState extends State<OrderHistory> {
         ],
       ),
       body: FutureBuilder(
-        future: Order.readOrdersBy(),
+        future: Order.readOrdersBy(userName),
         builder: (
           BuildContext context,
           AsyncSnapshot<List<Order>?> snapshot,

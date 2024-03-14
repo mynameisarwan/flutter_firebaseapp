@@ -9,19 +9,16 @@ import 'package:get/get.dart';
 import '../models/user.dart' as model;
 
 String userEmail = "";
-// String userName = "";
-// AsyncSnapshot<model.User?>? dataUser;
 
 var db = FirebaseFirestore.instance;
 
 class UserProfile extends StatelessWidget {
   const UserProfile({super.key});
 
-  Future<model.User?> getData() async {
+  Future<model.User> getData() async {
     await getReference().then(
       (data) {
         userEmail = data['userEmail'];
-        // udata.
       },
     );
     return await model.User.readUser(userEmail).then(

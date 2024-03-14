@@ -4,7 +4,7 @@ import 'package:flutter_firebaseapp/src/features/controllers/reference_controlle
 import 'package:flutter_firebaseapp/src/models/user.dart';
 import 'package:flutter_firebaseapp/src/screens/navigation_screen.dart';
 import 'package:flutter_firebaseapp/src/screens/myaccount_screen.dart';
-import 'package:flutter_firebaseapp/src/screens/orderhistory_screen.dart';
+import 'package:flutter_firebaseapp/src/screens/resellerorder_screen.dart';
 
 class VerificationController extends StatefulWidget {
   const VerificationController({super.key, required this.userEmail});
@@ -50,13 +50,14 @@ class _VerificationControllerState extends State<VerificationController> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<User?>(
+    return FutureBuilder<User>(
       future: User.readUser(widget.userEmail),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Text('Error : ${snapshot.error.toString()}');
         } else if (snapshot.hasData) {
           final user = snapshot.data!;
+          // print('verification controller profilename ${user.profileName}');
           setreference(user);
           String status = user.profileStatus;
           return status == 'Candidate'
@@ -67,7 +68,7 @@ class _VerificationControllerState extends State<VerificationController> {
                   ? const NavigationScreen(
                       scrIdx: 0,
                     )
-                  : const OrderHistory();
+                  : const ResellerOrder();
         } else {
           return Scaffold(
             body: Container(
