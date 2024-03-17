@@ -118,7 +118,7 @@ class _AssetsScreenState extends State<AssetsScreen> {
                           Colors.amber,
                         ),
                         textFormTemplate(
-                          'harga jual : ${NumberFormat.simpleCurrency(locale: 'id_ID').format(asset.sellingPrice!.toInt())}',
+                          'harga jual : ${NumberFormat.simpleCurrency(locale: 'id_ID').format(asset.sellingPrice == null ? 0 : asset.sellingPrice!.toInt())}',
                           false,
                           14,
                           Colors.white54,
